@@ -1,0 +1,32 @@
+{
+	"version": "0.0.0",
+	"keywords": [
+		"bricks",
+		"hash",
+		"hashing",
+		"javascript",
+		"js"
+	],
+	"license": "AGPL-3.0",
+	"dependencies": {},
+	"name": "aureooms-js-hash",
+	"main": "js/dist/hash.js",
+	"description": "hashing algorithms code bricks for JavaScript",
+	"homepage": "http://aureooms.github.io/js-hash/",
+	"scripts": {
+		"doc": "./node_modules/.bin/groc",
+		"test": "./node_modules/.bin/aureooms-node-package-test",
+		"build": "./node_modules/.bin/aureooms-node-package-build"
+	},
+	"devDependencies": {
+		"aureooms-node-package": "^1.0.0"
+	},
+	"author": "aureooms",
+	"bugs": {
+		"url": "https://github.com/aureooms/js-hash/issues"
+	},
+	"repository": {
+		"url": "https://github.com/aureooms/js-hash.git",
+		"type": "git"
+	}
+}
