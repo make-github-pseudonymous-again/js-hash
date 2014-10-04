@@ -5,8 +5,8 @@
  */
 
 var md5 = function (bytes, n, digest) {
-	var k, r, h, len, last, z, zeroes,
-	    j, m, o, q, y, tail, u;
+
+	var k, r, h, last, z, zeroes, j, m, o, q, y, tail, u;
 
 	function rot (word, shift) {
 		return (word << shift) | (word >>> (32 - shift));
@@ -28,9 +28,9 @@ var md5 = function (bytes, n, digest) {
 		var i, f, g, a, b, c, d, t;
 
 		// initialize hash value for this chunk:
-		a = h[0],
-		b = h[1],
-		c = h[2],
+		a = h[0];
+		b = h[1];
+		c = h[2];
 		d = h[3];
 
 		// main loop
@@ -150,22 +150,25 @@ var md5 = function (bytes, n, digest) {
 	m = n / 512 | 0;
 	y = (n - 512 * m) / 8 | 0;
 
-	// for each chunk
+	// offset in data
 	o = 0;
 
+	// for each chunk
 	for (j = 0; j < m; ++j, o += 64) {
 		call(h, k, r, bytes, o);
 	}
 
+	// last bytes + padding + length
 	tail = [];
 
+	// last bytes
 	for (j = 0; j < y; ++j) {
 		tail.push(bytes[o + j]);
 	}
 
+	// special care taken for the very last byte which could
+	// have been modified if n is not a multiple of 8
 	tail.push(last);
-
-
 
 
 	// append 0 ≤ k < 512 bits '0', so that the resulting
@@ -173,6 +176,10 @@ var md5 = function (bytes, n, digest) {
 	zeroes = (448 - (n + 1) % 512) / 8 | 0;
 
 	if (zeroes < 0) {
+		// we need an additional block as there is
+		// not enough space left to append
+		// the length of the data in bits
+
 		for (j = 0; j < -zeroes; ++j) {
 			tail.push(0);
 		}
@@ -184,6 +191,7 @@ var md5 = function (bytes, n, digest) {
 	}
 
 
+	// pad with zeroes
 	for (j = 0; j < zeroes; ++j) {
 		tail.push(0);
 	}
