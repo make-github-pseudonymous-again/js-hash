@@ -64,7 +64,7 @@ var sha1 = function (bytes, n, digest) {
 			}
 
 			// t = (a leftrotate 5) + f + e + k + w[j]
-			t = rot(a, 5) + f + e + k + w[j];
+			t = add32(add32(rot(a, 5), f), add32(add32(e, k), w[j]));
 			e = d;
 			d = c;
 			// c = b leftrotate 30
