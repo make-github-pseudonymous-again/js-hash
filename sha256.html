@@ -42,15 +42,15 @@
 			<span class="hljs-comment">//ch := (e and f) xor ((not e) and g)</span>
 			ch = (e &amp; f) ^ ((~e) &amp; g);
 			<span class="hljs-comment">//temp := h + S1 + ch + k[j] + w[j]</span>
-			temp = h + s1 + ch + k[j] + w[j];
+			temp = add32(add32(h, s1), add32(add32(ch, k[j]), w[j]));
 			<span class="hljs-comment">//d := d + temp;</span>
-			d = d + temp;
+			d = add32(d, temp);
 			<span class="hljs-comment">//S0 := (a rightrotate 2) xor (a rightrotate 13) xor (a rightrotate 22)</span>
 			s0 = (a &gt;&gt;&gt; <span class="hljs-number">2</span> | a &lt;&lt; <span class="hljs-number">30</span>) ^ (a &gt;&gt;&gt; <span class="hljs-number">13</span> | a &lt;&lt; <span class="hljs-number">19</span>) ^ (a &gt;&gt;&gt; <span class="hljs-number">22</span> | a &lt;&lt; <span class="hljs-number">10</span>);
 			<span class="hljs-comment">//maj := (a and (b xor c)) xor (b and c)</span>
 			maj = (a &amp; (b ^ c)) ^ (b &amp; c);
 			<span class="hljs-comment">//temp := temp + S0 + maj</span>
-			temp = temp + s0 + maj;
+			temp = add32(add32(temp, s0), maj);
 
 			h = g;
 			g = f;
