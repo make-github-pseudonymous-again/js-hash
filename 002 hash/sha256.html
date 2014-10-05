@@ -1,0 +1,175 @@
+<!DOCTYPE html><html lang="en"><head><title>002 hash/sha256</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="002 hash/sha256"><meta name="groc-project-path" content="js/src/002 hash/sha256.js"><meta name="groc-github-url" content="https://github.com/aureooms/js-hash"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/aureooms/js-hash/blob/master/js/src/002 hash/sha256.js">js/src/002 hash/sha256.js</a></div></div><div id="document"><div class="segment"></div><div class="segment"><div class="comments "><div class="wrapper"><p>SHA-256</p></div></div><div class="code"><div class="wrapper"><span class="hljs-keyword">var</span> sha256 = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(bytes, n, digest)</span> {</span>
+	<span class="hljs-keyword">var</span> q, z, u, last, h, m, y, o, j, tail, zeroes, k;
+
+	k = [
+		<span class="hljs-number">0x428a2f98</span>, <span class="hljs-number">0x71374491</span>, <span class="hljs-number">0xb5c0fbcf</span>, <span class="hljs-number">0xe9b5dba5</span>, <span class="hljs-number">0x3956c25b</span>, <span class="hljs-number">0x59f111f1</span>, <span class="hljs-number">0x923f82a4</span>, <span class="hljs-number">0xab1c5ed5</span>,
+		<span class="hljs-number">0xd807aa98</span>, <span class="hljs-number">0x12835b01</span>, <span class="hljs-number">0x243185be</span>, <span class="hljs-number">0x550c7dc3</span>, <span class="hljs-number">0x72be5d74</span>, <span class="hljs-number">0x80deb1fe</span>, <span class="hljs-number">0x9bdc06a7</span>, <span class="hljs-number">0xc19bf174</span>,
+		<span class="hljs-number">0xe49b69c1</span>, <span class="hljs-number">0xefbe4786</span>, <span class="hljs-number">0x0fc19dc6</span>, <span class="hljs-number">0x240ca1cc</span>, <span class="hljs-number">0x2de92c6f</span>, <span class="hljs-number">0x4a7484aa</span>, <span class="hljs-number">0x5cb0a9dc</span>, <span class="hljs-number">0x76f988da</span>,
+		<span class="hljs-number">0x983e5152</span>, <span class="hljs-number">0xa831c66d</span>, <span class="hljs-number">0xb00327c8</span>, <span class="hljs-number">0xbf597fc7</span>, <span class="hljs-number">0xc6e00bf3</span>, <span class="hljs-number">0xd5a79147</span>, <span class="hljs-number">0x06ca6351</span>, <span class="hljs-number">0x14292967</span>,
+		<span class="hljs-number">0x27b70a85</span>, <span class="hljs-number">0x2e1b2138</span>, <span class="hljs-number">0x4d2c6dfc</span>, <span class="hljs-number">0x53380d13</span>, <span class="hljs-number">0x650a7354</span>, <span class="hljs-number">0x766a0abb</span>, <span class="hljs-number">0x81c2c92e</span>, <span class="hljs-number">0x92722c85</span>,
+		<span class="hljs-number">0xa2bfe8a1</span>, <span class="hljs-number">0xa81a664b</span>, <span class="hljs-number">0xc24b8b70</span>, <span class="hljs-number">0xc76c51a3</span>, <span class="hljs-number">0xd192e819</span>, <span class="hljs-number">0xd6990624</span>, <span class="hljs-number">0xf40e3585</span>, <span class="hljs-number">0x106aa070</span>,
+		<span class="hljs-number">0x19a4c116</span>, <span class="hljs-number">0x1e376c08</span>, <span class="hljs-number">0x2748774c</span>, <span class="hljs-number">0x34b0bcb5</span>, <span class="hljs-number">0x391c0cb3</span>, <span class="hljs-number">0x4ed8aa4a</span>, <span class="hljs-number">0x5b9cca4f</span>, <span class="hljs-number">0x682e6ff3</span>,
+		<span class="hljs-number">0x748f82ee</span>, <span class="hljs-number">0x78a5636f</span>, <span class="hljs-number">0x84c87814</span>, <span class="hljs-number">0x8cc70208</span>, <span class="hljs-number">0x90befffa</span>, <span class="hljs-number">0xa4506ceb</span>, <span class="hljs-number">0xbef9a3f7</span>, <span class="hljs-number">0xc67178f2</span>
+	];
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add32</span> <span class="hljs-params">(a, b)</span> {</span>
+		<span class="hljs-keyword">return</span> (a + b) &amp; <span class="hljs-number">0xffffffff</span>;
+	}
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">big32</span> <span class="hljs-params">(a, o)</span> {</span>
+		<span class="hljs-keyword">return</span> (a[o + <span class="hljs-number">0</span>] &lt;&lt; <span class="hljs-number">24</span>) |
+		       (a[o + <span class="hljs-number">1</span>] &lt;&lt; <span class="hljs-number">16</span>) |
+		       (a[o + <span class="hljs-number">2</span>] &lt;&lt;  <span class="hljs-number">8</span>) |
+		        a[o + <span class="hljs-number">3</span>];
+	}
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cycle</span> <span class="hljs-params">(state, w)</span> {</span>
+
+		<span class="hljs-keyword">var</span> j, a, b, c, d, e, f, g, h, t, s0, s1, ch, temp, maj;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>initialize hash value for this chunk:</p></div></div><div class="code"><div class="wrapper">		a = state[<span class="hljs-number">0</span>];
+		b = state[<span class="hljs-number">1</span>];
+		c = state[<span class="hljs-number">2</span>];
+		d = state[<span class="hljs-number">3</span>];
+		e = state[<span class="hljs-number">4</span>];
+		f = state[<span class="hljs-number">5</span>];
+		g = state[<span class="hljs-number">6</span>];
+		h = state[<span class="hljs-number">7</span>];
+
+		<span class="hljs-comment">//Main loop:</span>
+		<span class="hljs-comment">//for j from 0 to 63</span>
+		<span class="hljs-keyword">for</span>(j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">64</span>; ++j){
+			<span class="hljs-comment">//S1 := (e rightrotate 6) xor (e rightrotate 11) xor (e rightrotate 25)</span>
+			s1 = (e &gt;&gt;&gt; <span class="hljs-number">6</span> | e &lt;&lt; <span class="hljs-number">26</span>) ^(e &gt;&gt;&gt; <span class="hljs-number">11</span> | e &lt;&lt; <span class="hljs-number">21</span>) ^(e &gt;&gt;&gt; <span class="hljs-number">25</span> | e &lt;&lt; <span class="hljs-number">7</span>);
+			<span class="hljs-comment">//ch := (e and f) xor ((not e) and g)</span>
+			ch = (e &amp; f) ^ ((~e) &amp; g);
+			<span class="hljs-comment">//temp := h + S1 + ch + k[j] + w[j]</span>
+			temp = add32(add32(h, s1), add32(add32(ch, k[j]), w[j]));
+			<span class="hljs-comment">//d := d + temp;</span>
+			d = add32(d, temp);
+			<span class="hljs-comment">//S0 := (a rightrotate 2) xor (a rightrotate 13) xor (a rightrotate 22)</span>
+			s0 = (a &gt;&gt;&gt; <span class="hljs-number">2</span> | a &lt;&lt; <span class="hljs-number">30</span>) ^ (a &gt;&gt;&gt; <span class="hljs-number">13</span> | a &lt;&lt; <span class="hljs-number">19</span>) ^ (a &gt;&gt;&gt; <span class="hljs-number">22</span> | a &lt;&lt; <span class="hljs-number">10</span>);
+			<span class="hljs-comment">//maj := (a and (b xor c)) xor (b and c)</span>
+			maj = (a &amp; (b ^ c)) ^ (b &amp; c);
+			<span class="hljs-comment">//temp := temp + S0 + maj</span>
+			temp = add32(add32(temp, s0), maj);
+
+			h = g;
+			g = f;
+			f = e;
+			e = d;
+			d = c;
+			c = b;
+			b = a;
+			a = temp;
+		}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Add this chunk&#39;s hash to result so far:</p></div></div><div class="code"><div class="wrapper">		state[<span class="hljs-number">0</span>] = add32(state[<span class="hljs-number">0</span>], a);
+		state[<span class="hljs-number">1</span>] = add32(state[<span class="hljs-number">1</span>], b);
+		state[<span class="hljs-number">2</span>] = add32(state[<span class="hljs-number">2</span>], c);
+		state[<span class="hljs-number">3</span>] = add32(state[<span class="hljs-number">3</span>], d);
+		state[<span class="hljs-number">4</span>] = add32(state[<span class="hljs-number">4</span>], e);
+		state[<span class="hljs-number">5</span>] = add32(state[<span class="hljs-number">5</span>], f);
+		state[<span class="hljs-number">6</span>] = add32(state[<span class="hljs-number">6</span>], g);
+		state[<span class="hljs-number">7</span>] = add32(state[<span class="hljs-number">7</span>], h);
+	}
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">call</span> <span class="hljs-params">(h, data, o)</span> {</span>
+
+		<span class="hljs-keyword">var</span> w, j, s0, s1;
+
+		w = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Array</span>(<span class="hljs-number">64</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>break chunk into sixteen 32-bit big-endian words w[i], 0 ≤ i ≤ 15</p></div></div><div class="code"><div class="wrapper">		<span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">16</span>; ++j) {
+			w[j] = big32(data, o + j * <span class="hljs-number">4</span>);
+		}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Extend the sixteen 32-bit words into sixty-four 32-bit words:
+for j from 16 to 63</p></div></div><div class="code"><div class="wrapper">		<span class="hljs-keyword">for</span> (j = <span class="hljs-number">16</span>; j &lt; <span class="hljs-number">64</span>; ++j) {
+			<span class="hljs-comment">//s0 := (w[j-15] rightrotate 7) xor (w[j-15] rightrotate 18) xor (w[j-15] rightshift 3)</span>
+			s0 = (w[j-<span class="hljs-number">15</span>] &gt;&gt;&gt; <span class="hljs-number">7</span> | w[j-<span class="hljs-number">15</span>] &lt;&lt; <span class="hljs-number">25</span>) ^ (w[j-<span class="hljs-number">15</span>] &gt;&gt;&gt; <span class="hljs-number">18</span> | w[j-<span class="hljs-number">15</span>] &lt;&lt; <span class="hljs-number">14</span>) ^ (w[j-<span class="hljs-number">15</span>] &gt;&gt;&gt; <span class="hljs-number">3</span>);
+			<span class="hljs-comment">//s1 := (w[j-2] rightrotate 17) xor (w[j-2] rightrotate 19) xor (w[j-2] rightshift 10)</span>
+			s1 = (w[j-<span class="hljs-number">2</span>] &gt;&gt;&gt; <span class="hljs-number">17</span> | w[j-<span class="hljs-number">2</span>] &lt;&lt; <span class="hljs-number">15</span>) ^ (w[j-<span class="hljs-number">2</span>] &gt;&gt;&gt; <span class="hljs-number">19</span> | w[j-<span class="hljs-number">2</span>] &lt;&lt; <span class="hljs-number">13</span>) ^ (w[j-<span class="hljs-number">2</span>] &gt;&gt;&gt; <span class="hljs-number">10</span>);
+			<span class="hljs-comment">//w[j] := w[j-16] + s0 + w[j-7] + s1</span>
+			w[j] = add32(add32(w[j-<span class="hljs-number">16</span>], s0), add32(w[j-<span class="hljs-number">7</span>], s1));
+		}
+
+
+		cycle(h, w);
+	}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>PREPARE</p></div></div><div class="code"><div class="wrapper">	q = n / <span class="hljs-number">8</span> | <span class="hljs-number">0</span>;
+	z = q * <span class="hljs-number">8</span>;
+	u = n - z;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>append the bit &#39;1&#39; to the message</p></div></div><div class="code"><div class="wrapper">	<span class="hljs-keyword">if</span> (u &gt; <span class="hljs-number">0</span>) {
+		last = bytes[q] &amp; (~<span class="hljs-number">0</span>) &lt;&lt; (<span class="hljs-number">7</span>-u);
+	}
+	<span class="hljs-keyword">else</span> {
+		last = <span class="hljs-number">0x80</span>;
+	}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Note 1: All variables are unsigned 32 bits and wrap modulo 2^32 when calculating
+Note 2: All constants in this pseudo code are in big endian.
+Within each word, the most significant byte is stored in the leftmost byte position</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Initialize state:</p></div></div><div class="code"><div class="wrapper">	h = [<span class="hljs-number">0x6a09e667</span>, <span class="hljs-number">0xbb67ae85</span>, <span class="hljs-number">0x3c6ef372</span>, <span class="hljs-number">0xa54ff53a</span>, <span class="hljs-number">0x510e527f</span>, <span class="hljs-number">0x9b05688c</span>, <span class="hljs-number">0x1f83d9ab</span>, <span class="hljs-number">0x5be0cd19</span>];</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Process the message in successive 512-bit chunks:
+break message into 512-bit chunks</p></div></div><div class="code"><div class="wrapper">	m = n / <span class="hljs-number">512</span> | <span class="hljs-number">0</span>;
+	y = (n - <span class="hljs-number">512</span> * m) / <span class="hljs-number">8</span> | <span class="hljs-number">0</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>offset in data</p></div></div><div class="code"><div class="wrapper">	o = <span class="hljs-number">0</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>for each chunk</p></div></div><div class="code"><div class="wrapper">	<span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; m; ++j, o += <span class="hljs-number">64</span>) {
+		call(h, bytes, o);
+	}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>last bytes + padding + length</p></div></div><div class="code"><div class="wrapper">	tail = [];</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>last bytes</p></div></div><div class="code"><div class="wrapper">	<span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; y; ++j) {
+		tail.push(bytes[o + j]);
+	}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>special care taken for the very last byte which could
+have been modified if n is not a multiple of 8</p></div></div><div class="code"><div class="wrapper">	tail.push(last);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>append 0 ≤ k &lt; 512 bits &#39;0&#39;, so that the resulting
+message length (in bits) is congruent to 448 (mod 512)</p></div></div><div class="code"><div class="wrapper">	zeroes = (<span class="hljs-number">448</span> - (n + <span class="hljs-number">1</span>) % <span class="hljs-number">512</span>) / <span class="hljs-number">8</span> | <span class="hljs-number">0</span>;
+
+	<span class="hljs-keyword">if</span> (zeroes &lt; <span class="hljs-number">0</span>) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>we need an additional block as there is
+not enough space left to append
+the length of the data in bits</p></div></div><div class="code"><div class="wrapper">		<span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; -zeroes; ++j) {
+			tail.push(<span class="hljs-number">0</span>);
+		}
+
+		call(h, tail, <span class="hljs-number">0</span>);
+
+		zeroes = <span class="hljs-number">448</span> / <span class="hljs-number">8</span>;
+		tail = [];
+	}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>pad with zeroes</p></div></div><div class="code"><div class="wrapper">	<span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; zeroes; ++j) {
+		tail.push(<span class="hljs-number">0</span>);
+	}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>append length of message (before preparation), in bits,
+as 64-bit big-endian integer</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>JavaScript works with 32 bit integers.
+tail.push((n &gt;&gt;&gt; 56) &amp; 0xff);
+tail.push((n &gt;&gt;&gt; 48) &amp; 0xff);
+tail.push((n &gt;&gt;&gt; 40) &amp; 0xff);
+tail.push((n &gt;&gt;&gt; 32) &amp; 0xff);</p></div></div><div class="code"><div class="wrapper">	tail.push(<span class="hljs-number">0</span>);
+	tail.push(<span class="hljs-number">0</span>);
+	tail.push(<span class="hljs-number">0</span>);
+	tail.push(<span class="hljs-number">0</span>);
+	
+	tail.push((n &gt;&gt;&gt; <span class="hljs-number">24</span>) &amp; <span class="hljs-number">0xff</span>);
+	tail.push((n &gt;&gt;&gt; <span class="hljs-number">16</span>) &amp; <span class="hljs-number">0xff</span>);
+	tail.push((n &gt;&gt;&gt;  <span class="hljs-number">8</span>) &amp; <span class="hljs-number">0xff</span>);
+	tail.push((n &gt;&gt;&gt;  <span class="hljs-number">0</span>) &amp; <span class="hljs-number">0xff</span>);
+
+	call(h, tail, <span class="hljs-number">0</span>);
+
+	digest[<span class="hljs-number">0</span>]  = (h[<span class="hljs-number">0</span>] &gt;&gt;&gt; <span class="hljs-number">24</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">1</span>]  = (h[<span class="hljs-number">0</span>] &gt;&gt;&gt; <span class="hljs-number">16</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">2</span>]  = (h[<span class="hljs-number">0</span>] &gt;&gt;&gt;  <span class="hljs-number">8</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">3</span>]  = (h[<span class="hljs-number">0</span>] &gt;&gt;&gt;  <span class="hljs-number">0</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">4</span>]  = (h[<span class="hljs-number">1</span>] &gt;&gt;&gt; <span class="hljs-number">24</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">5</span>]  = (h[<span class="hljs-number">1</span>] &gt;&gt;&gt; <span class="hljs-number">16</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">6</span>]  = (h[<span class="hljs-number">1</span>] &gt;&gt;&gt;  <span class="hljs-number">8</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">7</span>]  = (h[<span class="hljs-number">1</span>] &gt;&gt;&gt;  <span class="hljs-number">0</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">8</span>]  = (h[<span class="hljs-number">2</span>] &gt;&gt;&gt; <span class="hljs-number">24</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">9</span>]  = (h[<span class="hljs-number">2</span>] &gt;&gt;&gt; <span class="hljs-number">16</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">10</span>] = (h[<span class="hljs-number">2</span>] &gt;&gt;&gt;  <span class="hljs-number">8</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">11</span>] = (h[<span class="hljs-number">2</span>] &gt;&gt;&gt;  <span class="hljs-number">0</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">12</span>] = (h[<span class="hljs-number">3</span>] &gt;&gt;&gt; <span class="hljs-number">24</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">13</span>] = (h[<span class="hljs-number">3</span>] &gt;&gt;&gt; <span class="hljs-number">16</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">14</span>] = (h[<span class="hljs-number">3</span>] &gt;&gt;&gt;  <span class="hljs-number">8</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">15</span>] = (h[<span class="hljs-number">3</span>] &gt;&gt;&gt;  <span class="hljs-number">0</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">16</span>] = (h[<span class="hljs-number">4</span>] &gt;&gt;&gt; <span class="hljs-number">24</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">17</span>] = (h[<span class="hljs-number">4</span>] &gt;&gt;&gt; <span class="hljs-number">16</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">18</span>] = (h[<span class="hljs-number">4</span>] &gt;&gt;&gt;  <span class="hljs-number">8</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">19</span>] = (h[<span class="hljs-number">4</span>] &gt;&gt;&gt;  <span class="hljs-number">0</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">20</span>] = (h[<span class="hljs-number">5</span>] &gt;&gt;&gt; <span class="hljs-number">24</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">21</span>] = (h[<span class="hljs-number">5</span>] &gt;&gt;&gt; <span class="hljs-number">16</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">22</span>] = (h[<span class="hljs-number">5</span>] &gt;&gt;&gt;  <span class="hljs-number">8</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">23</span>] = (h[<span class="hljs-number">5</span>] &gt;&gt;&gt;  <span class="hljs-number">0</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">24</span>] = (h[<span class="hljs-number">6</span>] &gt;&gt;&gt; <span class="hljs-number">24</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">25</span>] = (h[<span class="hljs-number">6</span>] &gt;&gt;&gt; <span class="hljs-number">16</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">26</span>] = (h[<span class="hljs-number">6</span>] &gt;&gt;&gt;  <span class="hljs-number">8</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">27</span>] = (h[<span class="hljs-number">6</span>] &gt;&gt;&gt;  <span class="hljs-number">0</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">28</span>] = (h[<span class="hljs-number">7</span>] &gt;&gt;&gt; <span class="hljs-number">24</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">29</span>] = (h[<span class="hljs-number">7</span>] &gt;&gt;&gt; <span class="hljs-number">16</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">30</span>] = (h[<span class="hljs-number">7</span>] &gt;&gt;&gt;  <span class="hljs-number">8</span>) &amp; <span class="hljs-number">0xff</span>;
+	digest[<span class="hljs-number">31</span>] = (h[<span class="hljs-number">7</span>] &gt;&gt;&gt;  <span class="hljs-number">0</span>) &amp; <span class="hljs-number">0xff</span>;
+
+	<span class="hljs-keyword">return</span> digest;
+};
+
+exports.sha256 = sha256;</div></div></div></div></body></html>
