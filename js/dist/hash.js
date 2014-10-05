@@ -3,7 +3,125 @@
 	'use strict';
 
 
-/* js/src/md5.js */
+/* js/src/000 uint32 */
+/* js/src/000 uint32/add32.js */
+
+var add32 = function (a, b) {
+	return (a + b) & 0xffffffff;
+};
+
+exports.add32 = add32;
+
+/* js/src/000 uint32/big32.js */
+
+var big32 = function big32 (a, o) {
+	return (a[o + 0] << 24) | (a[o + 1] << 16) | (a[o + 2] << 8) | a[o + 3];
+}
+
+exports.big32 = big32;
+
+/* js/src/000 uint32/lil32.js */
+
+var lil32 = function lil32 (a, o) {
+	return (a[o + 3] << 24) | (a[o + 2] << 16) | (a[o + 1] << 8) | a[o + 0];
+};
+
+exports.lil32 = lil32;
+
+/* js/src/000 uint32/rot32.js */
+
+/**
+ * Left rotate for 32-bit unsigned integers
+ *
+ *  - used in md5 and sha1
+ */
+
+var rot32 = function (word, shift) {
+	return (word << shift) | (word >>> (32 - shift));
+};
+
+exports.rot32 = rot32;
+
+/* js/src/001 uint64 */
+/* js/src/001 uint64/add64.js */
+
+var add64 = function (a, b) {
+	var t, u, c;
+
+	t = (a[1] >>> 0) + (b[1] >>> 0);
+	u = t & 0xffffffff;
+	c = +(t > 0xffffffff);
+
+	return [(a[0] + b[0] + c) & 0xffffffff, u];
+};
+
+exports.add64 = add64;
+
+/* js/src/001 uint64/and64.js */
+
+var and64 = function (a, b) {
+	return [a[0] & b[0], a[1] & b[1]];
+};
+
+exports.and64 = and64;
+
+/* js/src/001 uint64/big64.js */
+
+var big64 = function (a, o) {
+	return [
+		(a[o + 0] << 24) | (a[o + 1] << 16) | (a[o + 2] << 8) | a[o + 3],
+		(a[o + 4] << 24) | (a[o + 5] << 16) | (a[o + 6] << 8) | a[o + 7]
+	];
+};
+
+exports.big64 = big64;
+
+/* js/src/001 uint64/not64.js */
+
+var not64 = function (a) {
+	return [~a[0], ~a[1]];
+};
+
+exports.not64 = not64;
+
+/* js/src/001 uint64/rot64.js */
+
+/**
+ * Right rotate for 64-bit unsigned integers
+ *
+ *  - used in the sha2 family
+ */
+
+var rot64 = function (a, s) {
+	if (s < 32) {
+		return [(a[1] << (32-s)) | a[0] >>> s, (a[0] << (32-s)) | (a[1] >>> s)];
+	}
+	else {
+		s -= 32;
+		return [(a[0] << (32-s)) | (a[1] >>> s), (a[1] << (32-s)) | a[0] >>> s];
+	}
+};
+
+exports.rot64 = rot64;
+
+/* js/src/001 uint64/sh64.js */
+
+var sh64 = function (a, s) {
+	return [a[0] >>> s, (a[0] << (32-s)) | (a[1] >>> s)];
+};
+
+exports.sh64 = sh64;
+
+/* js/src/001 uint64/xor64.js */
+
+var xor64 = function xor64 (a, b) {
+	return [a[0] ^ b[0], a[1] ^ b[1]];
+};
+
+exports.xor64 = xor64;
+
+/* js/src/002 hash */
+/* js/src/002 hash/md5.js */
 
 
 /**
@@ -13,21 +131,6 @@
 var md5 = function (bytes, n, digest) {
 
 	var k, r, h, last, z, zeroes, j, m, o, q, y, tail, u;
-
-	function rot (word, shift) {
-		return (word << shift) | (word >>> (32 - shift));
-	}
-
-	function add32 (a, b) {
-		return (a + b) & 0xffffffff;
-	}
-
-	function lil32 (a, o) {
-		return (a[o + 3] << 24) |
-		       (a[o + 2] << 16) |
-		       (a[o + 1] <<  8) |
-		        a[o + 0];
-	}
 
 	function cycle (h, k, r, w) {
 
@@ -63,7 +166,7 @@ var md5 = function (bytes, n, digest) {
 			t = d;
 			d = c;
 			c = b;
-			b = add32(b, rot(add32(add32(a, f), add32(k[i], w[g])) , r[i]));
+			b = add32(b, rot32(add32(add32(a, f), add32(k[i], w[g])) , r[i]));
 			a = t;
 		}
 
@@ -244,7 +347,7 @@ var md5 = function (bytes, n, digest) {
 
 exports.md5 = md5;
 
-/* js/src/md5fast.js */
+/* js/src/002 hash/md5fast.js */
 
 
 /**
@@ -252,19 +355,8 @@ exports.md5 = md5;
  */
 
 var md5fast = function (bytes, n, digest) {
-	var h, len, last, z, zeroes,
-	    j, m, o, q, y, tail, u;
 
-	function add32 (a, b) {
-		return (a + b) & 0xffffffff;
-	}
-
-	function lil32 (a, o) {
-		return (a[o + 3] << 24) |
-		       (a[o + 2] << 16) |
-		       (a[o + 1] <<  8) |
-		        a[o + 0];
-	}
+	var h, len, last, z, zeroes, j, m, o, q, y, tail, u;
 
 	function cycle(x, k) {
 		var a = x[0], b = x[1], c = x[2], d = x[3];
@@ -494,7 +586,7 @@ var md5fast = function (bytes, n, digest) {
 
 exports.md5fast = md5fast;
 
-/* js/src/sha1.js */
+/* js/src/002 hash/sha1.js */
 
 
 /**
@@ -504,21 +596,6 @@ exports.md5fast = md5fast;
 var sha1 = function (bytes, n, digest) {
 
 	var q, z, u, last, h, m, y, o, j, tail, zeroes;
-
-	function rot (word, shift) {
-		return (word << shift) | (word >>> (32 - shift));
-	}
-
-	function add32 (a, b) {
-		return (a + b) & 0xffffffff;
-	}
-
-	function big32 (a, o) {
-		return (a[o + 0] << 24) |
-		       (a[o + 1] << 16) |
-		       (a[o + 2] <<  8) |
-		        a[o + 3];
-	}
 
 	function cycle (h, w) {
 
@@ -534,7 +611,7 @@ var sha1 = function (bytes, n, digest) {
 		// Main loop:[35]
 		// for j from 0 to 79
 		for (j = 0; j < 80; ++j) {
-			
+
 			// if 0 ≤ j ≤ 19 then
 			if(0 <= j && j <= 19){
 				// f = (b and c) or ((not b) and d)
@@ -561,11 +638,11 @@ var sha1 = function (bytes, n, digest) {
 			}
 
 			// t = (a leftrotate 5) + f + e + k + w[j]
-			t = add32(add32(rot(a, 5), f), add32(add32(e, k), w[j]));
+			t = add32(add32(rot32(a, 5), f), add32(add32(e, k), w[j]));
 			e = d;
 			d = c;
 			// c = b leftrotate 30
-			c = rot(b, 30);
+			c = rot32(b, 30);
 			b = a;
 			a = t;
 		}
@@ -595,7 +672,7 @@ var sha1 = function (bytes, n, digest) {
 		for(j = 16; j < 80; ++j){
 			// w[j] = (w[j-3] xor w[j-8] xor w[j-14] xor w[j-16]) leftrotate 1
 			k = (w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16]);
-			w[j] = rot(k, 1);
+			w[j] = rot32(k, 1);
 		}
 
 
@@ -690,7 +767,7 @@ var sha1 = function (bytes, n, digest) {
 	tail.push(0);
 	tail.push(0);
 	tail.push(0);
-	
+
 	tail.push((n >>> 24) & 0xFF);
 	tail.push((n >>> 16) & 0xFF);
 	tail.push((n >>>  8) & 0xFF);
@@ -724,7 +801,7 @@ var sha1 = function (bytes, n, digest) {
 
 exports.sha1 = sha1;
 
-/* js/src/sha224.js */
+/* js/src/002 hash/sha224.js */
 
 
 /**
@@ -969,7 +1046,7 @@ var sha224 = function (bytes, n, digest) {
 
 exports.sha224 = sha224;
 
-/* js/src/sha256.js */
+/* js/src/002 hash/sha256.js */
 
 
 /**
@@ -1214,7 +1291,7 @@ var sha256 = function (bytes, n, digest) {
 
 exports.sha256 = sha256;
 
-/* js/src/sha384.js */
+/* js/src/002 hash/sha384.js */
 
 
 /**
@@ -1229,7 +1306,7 @@ var sha384 = function (bytes, n, digest) {
 	// Note 2: All constants in this pseudo code are in big endian
 
 	// Initialize variables
-	//(first 64 bits of the fractional parts of the square roots of the 9th through 16th primes 23..53)
+	// (first 64 bits of the fractional parts of the square roots of the 9th through 16th primes 23..53)
 	h = [
 		[0xcbbb9d5d, 0xc1059ed8],
 		[0x629a292a, 0x367cd507],
@@ -1265,49 +1342,6 @@ var sha384 = function (bytes, n, digest) {
 		[0x28db77f5, 0x23047d84], [0x32caab7b, 0x40c72493], [0x3c9ebe0a, 0x15c9bebc], [0x431d67c4, 0x9c100d4c],
 		[0x4cc5d4be, 0xcb3e42b6], [0x597f299c, 0xfc657e2a], [0x5fcb6fab, 0x3ad6faec], [0x6c44198c, 0x4a475817]
 	];
-
-	function add64 (a, b) {
-		var t, u, c;
-
-		t = (a[1] >>> 0) + (b[1] >>> 0);
-		u = t & 0xffffffff;
-		c = +(t > 0xffffffff);
-
-		return [(a[0] + b[0] + c) & 0xffffffff, u];
-	}
-
-	function and64 (a, b) {
-		return [a[0] & b[0], a[1] & b[1]];
-	}
-
-	function xor64 (a, b) {
-		return [a[0] ^ b[0], a[1] ^ b[1]];
-	}
-
-	function rot64 (a, s) {
-		if (s < 32) {
-			return [(a[1] << (32-s)) | a[0] >>> s, (a[0] << (32-s)) | (a[1] >>> s)];
-		}
-		else {
-			s -= 32;
-			return [(a[0] << (32-s)) | (a[1] >>> s), (a[1] << (32-s)) | a[0] >>> s];
-		}
-	}
-
-	function not64 (a) {
-		return [~a[0], ~a[1]];
-	}
-
-	function sh64 (a, s) {
-		return [a[0] >>> s, (a[0] << (32-s)) | (a[1] >>> s)];
-	}
-
-	function big64 (a, o) {
-		return [
-			(a[o + 0] << 24) | (a[o + 1] << 16) | (a[o + 2] <<  8) | a[o + 3],
-			(a[o + 4] << 24) | (a[o + 5] << 16) | (a[o + 6] <<  8) | a[o + 7]
-		];
-	}
 
 	function cycle (state, w) {
 
@@ -1485,7 +1519,7 @@ var sha384 = function (bytes, n, digest) {
 	tail.push(0);
 	tail.push(0);
 	tail.push(0);
-	
+
 	tail.push((n >>> 24) & 0xff);
 	tail.push((n >>> 16) & 0xff);
 	tail.push((n >>>  8) & 0xff);
@@ -1517,7 +1551,7 @@ var sha384 = function (bytes, n, digest) {
 
 exports.sha384 = sha384;
 
-/* js/src/sha512.js */
+/* js/src/002 hash/sha512.js */
 
 
 /**
@@ -1569,49 +1603,6 @@ var sha512 = function (bytes, n, digest) {
 		[0x4cc5d4be, 0xcb3e42b6], [0x597f299c, 0xfc657e2a], [0x5fcb6fab, 0x3ad6faec], [0x6c44198c, 0x4a475817]
 	];
 
-	function add64 (a, b) {
-		var t, u, c;
-
-		t = (a[1] >>> 0) + (b[1] >>> 0);
-		u = t & 0xffffffff;
-		c = +(t > 0xffffffff);
-
-		return [(a[0] + b[0] + c) & 0xffffffff, u];
-	}
-
-	function and64 (a, b) {
-		return [a[0] & b[0], a[1] & b[1]];
-	}
-
-	function xor64 (a, b) {
-		return [a[0] ^ b[0], a[1] ^ b[1]];
-	}
-
-	function rot64 (a, s) {
-		if (s < 32) {
-			return [(a[1] << (32-s)) | a[0] >>> s, (a[0] << (32-s)) | (a[1] >>> s)];
-		}
-		else {
-			s -= 32;
-			return [(a[0] << (32-s)) | (a[1] >>> s), (a[1] << (32-s)) | a[0] >>> s];
-		}
-	}
-
-	function not64 (a) {
-		return [~a[0], ~a[1]];
-	}
-
-	function sh64 (a, s) {
-		return [a[0] >>> s, (a[0] << (32-s)) | (a[1] >>> s)];
-	}
-
-	function big64 (a, o) {
-		return [
-			(a[o + 0] << 24) | (a[o + 1] << 16) | (a[o + 2] <<  8) | a[o + 3],
-			(a[o + 4] << 24) | (a[o + 5] << 16) | (a[o + 6] <<  8) | a[o + 7]
-		];
-	}
-
 	function cycle (state, w) {
 
 		var j, a, b, c, d, e, f, g, h, t, s0, s1, ch, temp, maj;
@@ -1788,7 +1779,7 @@ var sha512 = function (bytes, n, digest) {
 	tail.push(0);
 	tail.push(0);
 	tail.push(0);
-	
+
 	tail.push((n >>> 24) & 0xff);
 	tail.push((n >>> 16) & 0xff);
 	tail.push((n >>>  8) & 0xff);

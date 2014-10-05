@@ -5,19 +5,8 @@
  */
 
 var md5fast = function (bytes, n, digest) {
-	var h, len, last, z, zeroes,
-	    j, m, o, q, y, tail, u;
 
-	function add32 (a, b) {
-		return (a + b) & 0xffffffff;
-	}
-
-	function lil32 (a, o) {
-		return (a[o + 3] << 24) |
-		       (a[o + 2] << 16) |
-		       (a[o + 1] <<  8) |
-		        a[o + 0];
-	}
+	var h, len, last, z, zeroes, j, m, o, q, y, tail, u;
 
 	function cycle(x, k) {
 		var a = x[0], b = x[1], c = x[2], d = x[3];

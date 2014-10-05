@@ -1,10 +1,10 @@
 
 
 /**
- * SHA-512
+ * SHA-384
  */
 
-var sha512 = function (bytes, n, digest) {
+var sha384 = function (bytes, n, digest) {
 	var q, z, u, last, h, m, y, o, i, j, tail, zeroes, g, k;
 
 
@@ -12,16 +12,16 @@ var sha512 = function (bytes, n, digest) {
 	// Note 2: All constants in this pseudo code are in big endian
 
 	// Initialize variables
-	// (first 64 bits of the fractional parts of the square roots of the first 8 primes 2..19):
+	// (first 64 bits of the fractional parts of the square roots of the 9th through 16th primes 23..53)
 	h = [
-		[0x6a09e667, 0xf3bcc908],
-		[0xbb67ae85, 0x84caa73b],
-		[0x3c6ef372, 0xfe94f82b],
-		[0xa54ff53a, 0x5f1d36f1],
-		[0x510e527f, 0xade682d1],
-		[0x9b05688c, 0x2b3e6c1f],
-		[0x1f83d9ab, 0xfb41bd6b],
-		[0x5be0cd19, 0x137e2179]
+		[0xcbbb9d5d, 0xc1059ed8],
+		[0x629a292a, 0x367cd507],
+		[0x9159015a, 0x3070dd17],
+		[0x152fecd8, 0xf70e5939],
+		[0x67332667, 0xffc00b31],
+		[0x8eb44a87, 0x68581511],
+		[0xdb0c2e0d, 0x64f98fa7],
+		[0x47b5481d, 0xbefa4fa4]
 	];
 
 	// Initialize table of round constants
@@ -48,49 +48,6 @@ var sha512 = function (bytes, n, digest) {
 		[0x28db77f5, 0x23047d84], [0x32caab7b, 0x40c72493], [0x3c9ebe0a, 0x15c9bebc], [0x431d67c4, 0x9c100d4c],
 		[0x4cc5d4be, 0xcb3e42b6], [0x597f299c, 0xfc657e2a], [0x5fcb6fab, 0x3ad6faec], [0x6c44198c, 0x4a475817]
 	];
-
-	function add64 (a, b) {
-		var t, u, c;
-
-		t = (a[1] >>> 0) + (b[1] >>> 0);
-		u = t & 0xffffffff;
-		c = +(t > 0xffffffff);
-
-		return [(a[0] + b[0] + c) & 0xffffffff, u];
-	}
-
-	function and64 (a, b) {
-		return [a[0] & b[0], a[1] & b[1]];
-	}
-
-	function xor64 (a, b) {
-		return [a[0] ^ b[0], a[1] ^ b[1]];
-	}
-
-	function rot64 (a, s) {
-		if (s < 32) {
-			return [(a[1] << (32-s)) | a[0] >>> s, (a[0] << (32-s)) | (a[1] >>> s)];
-		}
-		else {
-			s -= 32;
-			return [(a[0] << (32-s)) | (a[1] >>> s), (a[1] << (32-s)) | a[0] >>> s];
-		}
-	}
-
-	function not64 (a) {
-		return [~a[0], ~a[1]];
-	}
-
-	function sh64 (a, s) {
-		return [a[0] >>> s, (a[0] << (32-s)) | (a[1] >>> s)];
-	}
-
-	function big64 (a, o) {
-		return [
-			(a[o + 0] << 24) | (a[o + 1] << 16) | (a[o + 2] <<  8) | a[o + 3],
-			(a[o + 4] << 24) | (a[o + 5] << 16) | (a[o + 6] <<  8) | a[o + 7]
-		];
-	}
 
 	function cycle (state, w) {
 
@@ -268,7 +225,7 @@ var sha512 = function (bytes, n, digest) {
 	tail.push(0);
 	tail.push(0);
 	tail.push(0);
-	
+
 	tail.push((n >>> 24) & 0xff);
 	tail.push((n >>> 16) & 0xff);
 	tail.push((n >>>  8) & 0xff);
@@ -276,7 +233,7 @@ var sha512 = function (bytes, n, digest) {
 
 	call(h, tail, 0);
 
-	for (i = 0, j = 0; j < 8; ++j) {
+	for (i = 0, j = 0; j < 6; ++j) {
 		digest[i] = (h[j][0] >>> 24) & 0xff;
 		++i;
 		digest[i] = (h[j][0] >>> 16) & 0xff;
@@ -298,4 +255,4 @@ var sha512 = function (bytes, n, digest) {
 	return digest;
 };
 
-exports.sha512 = sha512;
+exports.sha384 = sha384;

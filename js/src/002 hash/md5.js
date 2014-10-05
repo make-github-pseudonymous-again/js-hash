@@ -8,21 +8,6 @@ var md5 = function (bytes, n, digest) {
 
 	var k, r, h, last, z, zeroes, j, m, o, q, y, tail, u;
 
-	function rot (word, shift) {
-		return (word << shift) | (word >>> (32 - shift));
-	}
-
-	function add32 (a, b) {
-		return (a + b) & 0xffffffff;
-	}
-
-	function lil32 (a, o) {
-		return (a[o + 3] << 24) |
-		       (a[o + 2] << 16) |
-		       (a[o + 1] <<  8) |
-		        a[o + 0];
-	}
-
 	function cycle (h, k, r, w) {
 
 		var i, f, g, a, b, c, d, t;
@@ -57,7 +42,7 @@ var md5 = function (bytes, n, digest) {
 			t = d;
 			d = c;
 			c = b;
-			b = add32(b, rot(add32(add32(a, f), add32(k[i], w[g])) , r[i]));
+			b = add32(b, rot32(add32(add32(a, f), add32(k[i], w[g])) , r[i]));
 			a = t;
 		}
 

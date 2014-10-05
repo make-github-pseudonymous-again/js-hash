@@ -8,21 +8,6 @@ var sha1 = function (bytes, n, digest) {
 
 	var q, z, u, last, h, m, y, o, j, tail, zeroes;
 
-	function rot (word, shift) {
-		return (word << shift) | (word >>> (32 - shift));
-	}
-
-	function add32 (a, b) {
-		return (a + b) & 0xffffffff;
-	}
-
-	function big32 (a, o) {
-		return (a[o + 0] << 24) |
-		       (a[o + 1] << 16) |
-		       (a[o + 2] <<  8) |
-		        a[o + 3];
-	}
-
 	function cycle (h, w) {
 
 		var j, f, k, a, b, c, d, e, t;
@@ -37,7 +22,7 @@ var sha1 = function (bytes, n, digest) {
 		// Main loop:[35]
 		// for j from 0 to 79
 		for (j = 0; j < 80; ++j) {
-			
+
 			// if 0 ≤ j ≤ 19 then
 			if(0 <= j && j <= 19){
 				// f = (b and c) or ((not b) and d)
@@ -64,11 +49,11 @@ var sha1 = function (bytes, n, digest) {
 			}
 
 			// t = (a leftrotate 5) + f + e + k + w[j]
-			t = add32(add32(rot(a, 5), f), add32(add32(e, k), w[j]));
+			t = add32(add32(rot32(a, 5), f), add32(add32(e, k), w[j]));
 			e = d;
 			d = c;
 			// c = b leftrotate 30
-			c = rot(b, 30);
+			c = rot32(b, 30);
 			b = a;
 			a = t;
 		}
@@ -98,7 +83,7 @@ var sha1 = function (bytes, n, digest) {
 		for(j = 16; j < 80; ++j){
 			// w[j] = (w[j-3] xor w[j-8] xor w[j-14] xor w[j-16]) leftrotate 1
 			k = (w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16]);
-			w[j] = rot(k, 1);
+			w[j] = rot32(k, 1);
 		}
 
 
@@ -193,7 +178,7 @@ var sha1 = function (bytes, n, digest) {
 	tail.push(0);
 	tail.push(0);
 	tail.push(0);
-	
+
 	tail.push((n >>> 24) & 0xFF);
 	tail.push((n >>> 16) & 0xFF);
 	tail.push((n >>>  8) & 0xFF);
