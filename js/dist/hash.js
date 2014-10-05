@@ -3,8 +3,8 @@
 	'use strict';
 
 
-/* js/src/000 uint32 */
-/* js/src/000 uint32/add32.js */
+/* js/src/000-uint32 */
+/* js/src/000-uint32/add32.js */
 
 var add32 = function (a, b) {
 	return (a + b) & 0xffffffff;
@@ -12,7 +12,7 @@ var add32 = function (a, b) {
 
 exports.add32 = add32;
 
-/* js/src/000 uint32/big32.js */
+/* js/src/000-uint32/big32.js */
 
 var big32 = function big32 (a, o) {
 	return (a[o + 0] << 24) | (a[o + 1] << 16) | (a[o + 2] << 8) | a[o + 3];
@@ -20,7 +20,7 @@ var big32 = function big32 (a, o) {
 
 exports.big32 = big32;
 
-/* js/src/000 uint32/lil32.js */
+/* js/src/000-uint32/lil32.js */
 
 var lil32 = function lil32 (a, o) {
 	return (a[o + 3] << 24) | (a[o + 2] << 16) | (a[o + 1] << 8) | a[o + 0];
@@ -28,7 +28,7 @@ var lil32 = function lil32 (a, o) {
 
 exports.lil32 = lil32;
 
-/* js/src/000 uint32/rot32.js */
+/* js/src/000-uint32/rot32.js */
 
 /**
  * Left rotate for 32-bit unsigned integers
@@ -42,8 +42,8 @@ var rot32 = function (word, shift) {
 
 exports.rot32 = rot32;
 
-/* js/src/001 uint64 */
-/* js/src/001 uint64/add64.js */
+/* js/src/001-uint64 */
+/* js/src/001-uint64/add64.js */
 
 var add64 = function (a, b) {
 	var t, u, c;
@@ -57,7 +57,7 @@ var add64 = function (a, b) {
 
 exports.add64 = add64;
 
-/* js/src/001 uint64/and64.js */
+/* js/src/001-uint64/and64.js */
 
 var and64 = function (a, b) {
 	return [a[0] & b[0], a[1] & b[1]];
@@ -65,7 +65,7 @@ var and64 = function (a, b) {
 
 exports.and64 = and64;
 
-/* js/src/001 uint64/big64.js */
+/* js/src/001-uint64/big64.js */
 
 var big64 = function (a, o) {
 	return [
@@ -76,7 +76,7 @@ var big64 = function (a, o) {
 
 exports.big64 = big64;
 
-/* js/src/001 uint64/not64.js */
+/* js/src/001-uint64/not64.js */
 
 var not64 = function (a) {
 	return [~a[0], ~a[1]];
@@ -84,7 +84,7 @@ var not64 = function (a) {
 
 exports.not64 = not64;
 
-/* js/src/001 uint64/rot64.js */
+/* js/src/001-uint64/rot64.js */
 
 /**
  * Right rotate for 64-bit unsigned integers
@@ -104,7 +104,7 @@ var rot64 = function (a, s) {
 
 exports.rot64 = rot64;
 
-/* js/src/001 uint64/sh64.js */
+/* js/src/001-uint64/sh64.js */
 
 var sh64 = function (a, s) {
 	return [a[0] >>> s, (a[0] << (32-s)) | (a[1] >>> s)];
@@ -112,7 +112,7 @@ var sh64 = function (a, s) {
 
 exports.sh64 = sh64;
 
-/* js/src/001 uint64/xor64.js */
+/* js/src/001-uint64/xor64.js */
 
 var xor64 = function xor64 (a, b) {
 	return [a[0] ^ b[0], a[1] ^ b[1]];
@@ -120,8 +120,8 @@ var xor64 = function xor64 (a, b) {
 
 exports.xor64 = xor64;
 
-/* js/src/002 hash */
-/* js/src/002 hash/md5.js */
+/* js/src/002-hash */
+/* js/src/002-hash/md5.js */
 
 
 /**
@@ -347,7 +347,7 @@ var md5 = function (bytes, n, digest) {
 
 exports.md5 = md5;
 
-/* js/src/002 hash/md5fast.js */
+/* js/src/002-hash/md5fast.js */
 
 
 /**
@@ -586,7 +586,7 @@ var md5fast = function (bytes, n, digest) {
 
 exports.md5fast = md5fast;
 
-/* js/src/002 hash/sha1.js */
+/* js/src/002-hash/sha1.js */
 
 
 /**
@@ -801,7 +801,7 @@ var sha1 = function (bytes, n, digest) {
 
 exports.sha1 = sha1;
 
-/* js/src/002 hash/sha224.js */
+/* js/src/002-hash/sha224.js */
 
 
 /**
@@ -1046,7 +1046,7 @@ var sha224 = function (bytes, n, digest) {
 
 exports.sha224 = sha224;
 
-/* js/src/002 hash/sha256.js */
+/* js/src/002-hash/sha256.js */
 
 
 /**
@@ -1291,7 +1291,7 @@ var sha256 = function (bytes, n, digest) {
 
 exports.sha256 = sha256;
 
-/* js/src/002 hash/sha384.js */
+/* js/src/002-hash/sha384.js */
 
 
 /**
@@ -1551,7 +1551,7 @@ var sha384 = function (bytes, n, digest) {
 
 exports.sha384 = sha384;
 
-/* js/src/002 hash/sha512.js */
+/* js/src/002-hash/sha512.js */
 
 
 /**
