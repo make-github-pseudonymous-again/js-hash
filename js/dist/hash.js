@@ -1410,11 +1410,11 @@ var sha384 = function (bytes, n, digest) {
 		// Extend the sixteen 64-bit words into 80 64-bit words:
 		// for j from 16 to 79
 		for (j = 16; j < 80; ++j) {
-			//s0 := (w[j-15] rightrotate 1) xor (w[j-15] rightrotate 8) xor (w[j-15] rightshift 7)
+			// s0 := (w[j-15] rightrotate 1) xor (w[j-15] rightrotate 8) xor (w[j-15] rightshift 7)
 			s0 = xor64(xor64(rot64(w[j-15],  1), rot64(w[j-15],  8)), sh64(w[j-15], 7));
-			//s1 := (w[j-2] rightrotate 19) xor (w[j-2] rightrotate 61) xor (w[j-2] rightshift 6)
+			// s1 := (w[j-2] rightrotate 19) xor (w[j-2] rightrotate 61) xor (w[j-2] rightshift 6)
 			s1 = xor64(xor64(rot64(w[j- 2], 19), rot64(w[j- 2], 61)), sh64(w[j- 2], 6));
-			//w[j] := w[j-16] + s0 + w[j-7] + s1
+			// w[j] := w[j-16] + s0 + w[j-7] + s1
 			w[j] = add64(add64(w[j-16], s0), add64(w[j-7], s1));
 		}
 
@@ -1670,11 +1670,11 @@ var sha512 = function (bytes, n, digest) {
 		// Extend the sixteen 64-bit words into 80 64-bit words:
 		// for j from 16 to 79
 		for (j = 16; j < 80; ++j) {
-			//s0 := (w[j-15] rightrotate 1) xor (w[j-15] rightrotate 8) xor (w[j-15] rightshift 7)
+			// s0 := (w[j-15] rightrotate 1) xor (w[j-15] rightrotate 8) xor (w[j-15] rightshift 7)
 			s0 = xor64(xor64(rot64(w[j-15],  1), rot64(w[j-15],  8)), sh64(w[j-15], 7));
-			//s1 := (w[j-2] rightrotate 19) xor (w[j-2] rightrotate 61) xor (w[j-2] rightshift 6)
+			// s1 := (w[j-2] rightrotate 19) xor (w[j-2] rightrotate 61) xor (w[j-2] rightshift 6)
 			s1 = xor64(xor64(rot64(w[j- 2], 19), rot64(w[j- 2], 61)), sh64(w[j- 2], 6));
-			//w[j] := w[j-16] + s0 + w[j-7] + s1
+			// w[j] := w[j-16] + s0 + w[j-7] + s1
 			w[j] = add64(add64(w[j-16], s0), add64(w[j-7], s1));
 		}
 
