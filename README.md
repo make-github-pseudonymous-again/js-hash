@@ -3,8 +3,13 @@
 
 hashing algorithms code bricks for JavaScript
 
-[![Build Status](https://travis-ci.org/aureooms/js-hash.svg)](https://travis-ci.org/aureooms/js-hash)
-[![Coverage Status](https://coveralls.io/repos/aureooms/js-hash/badge.png)](https://coveralls.io/r/aureooms/js-hash)
-[![Dependencies Status](https://david-dm.org/aureooms/js-hash.png)](https://david-dm.org/aureooms/js-hash#info=dependencies)
-[![devDependencies Status](https://david-dm.org/aureooms/js-hash/dev-status.png)](https://david-dm.org/aureooms/js-hash#info=devDependencies)
-[![Code Climate](https://codeclimate.com/github/aureooms/js-hash.png)](https://codeclimate.com/github/aureooms/js-hash)
+[![NPM license](http://img.shields.io/npm/l/aureooms-js-hash.svg?style=flat)](https://raw.githubusercontent.com/aureooms/js-hash/master/LICENSE)
+[![NPM version](http://img.shields.io/npm/v/aureooms-js-hash.svg?style=flat)](https://www.npmjs.org/package/aureooms-js-hash)
+[![Bower version](http://img.shields.io/bower/v/aureooms-js-hash.svg?style=flat)](http://bower.io/search/?q=aureooms-js-hash)
+[![Build Status](http://img.shields.io/travis/aureooms/js-hash.svg?style=flat)](https://travis-ci.org/aureooms/js-hash)
+[![Coverage Status](http://img.shields.io/coveralls/aureooms/js-hash.svg?style=flat)](https://coveralls.io/r/aureooms/js-hash)
+[![Dependencies Status](http://img.shields.io/david/aureooms/js-hash.svg?style=flat)](https://david-dm.org/aureooms/js-hash#info=dependencies)
+[![devDependencies Status](http://img.shields.io/david/dev/aureooms/js-hash.svg?style=flat)](https://david-dm.org/aureooms/js-hash#info=devDependencies)
+[![Code Climate](http://img.shields.io/codeclimate/github/aureooms/js-hash.svg?style=flat)](https://codeclimate.com/github/aureooms/js-hash)
+[![NPM downloads per month](http://img.shields.io/npm/dm/aureooms-js-hash.svg?style=flat)](https://www.npmjs.org/package/aureooms-js-hash)
+[![GitHub issues](http://img.shields.io/github/issues/aureooms/js-hash.svg?style=flat)](https://github.com/aureooms/js-hash/issues)
