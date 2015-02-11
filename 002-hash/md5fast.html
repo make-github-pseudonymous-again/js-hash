@@ -1,0 +1,204 @@
+<!DOCTYPE html><html lang="en"><head><title>002-hash/md5fast</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="002-hash/md5fast"><meta name="groc-project-path" content="js/src/002-hash/md5fast.js"><meta name="groc-github-url" content="https://github.com/aureooms/js-hash"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/aureooms/js-hash/blob/master/js/src/002-hash/md5fast.js">js/src/002-hash/md5fast.js</a></div></div><div id="document"><div class="segment"></div><div class="segment"><div class="comments "><div class="wrapper"><p>MD5 inlined implementation</p></div></div><div class="code"><div class="wrapper"><span class="hljs-keyword">var</span> md5fast = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(bytes, n, digest)</span> {</span>
+
+	<span class="hljs-keyword">var</span> h, len, last, z, zeroes, j, m, o, q, y, tail, u;
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cycle</span><span class="hljs-params">(x, k)</span> {</span>
+		<span class="hljs-keyword">var</span> a = x[<span class="hljs-number">0</span>], b = x[<span class="hljs-number">1</span>], c = x[<span class="hljs-number">2</span>], d = x[<span class="hljs-number">3</span>];
+
+		a = ff(a, b, c, d, k[<span class="hljs-number">0</span>], <span class="hljs-number">7</span>, -<span class="hljs-number">680876936</span>);
+		d = ff(d, a, b, c, k[<span class="hljs-number">1</span>], <span class="hljs-number">12</span>, -<span class="hljs-number">389564586</span>);
+		c = ff(c, d, a, b, k[<span class="hljs-number">2</span>], <span class="hljs-number">17</span>,  <span class="hljs-number">606105819</span>);
+		b = ff(b, c, d, a, k[<span class="hljs-number">3</span>], <span class="hljs-number">22</span>, -<span class="hljs-number">1044525330</span>);
+		a = ff(a, b, c, d, k[<span class="hljs-number">4</span>], <span class="hljs-number">7</span>, -<span class="hljs-number">176418897</span>);
+		d = ff(d, a, b, c, k[<span class="hljs-number">5</span>], <span class="hljs-number">12</span>,  <span class="hljs-number">1200080426</span>);
+		c = ff(c, d, a, b, k[<span class="hljs-number">6</span>], <span class="hljs-number">17</span>, -<span class="hljs-number">1473231341</span>);
+		b = ff(b, c, d, a, k[<span class="hljs-number">7</span>], <span class="hljs-number">22</span>, -<span class="hljs-number">45705983</span>);
+		a = ff(a, b, c, d, k[<span class="hljs-number">8</span>], <span class="hljs-number">7</span>,  <span class="hljs-number">1770035416</span>);
+		d = ff(d, a, b, c, k[<span class="hljs-number">9</span>], <span class="hljs-number">12</span>, -<span class="hljs-number">1958414417</span>);
+		c = ff(c, d, a, b, k[<span class="hljs-number">10</span>], <span class="hljs-number">17</span>, -<span class="hljs-number">42063</span>);
+		b = ff(b, c, d, a, k[<span class="hljs-number">11</span>], <span class="hljs-number">22</span>, -<span class="hljs-number">1990404162</span>);
+		a = ff(a, b, c, d, k[<span class="hljs-number">12</span>], <span class="hljs-number">7</span>,  <span class="hljs-number">1804603682</span>);
+		d = ff(d, a, b, c, k[<span class="hljs-number">13</span>], <span class="hljs-number">12</span>, -<span class="hljs-number">40341101</span>);
+		c = ff(c, d, a, b, k[<span class="hljs-number">14</span>], <span class="hljs-number">17</span>, -<span class="hljs-number">1502002290</span>);
+		b = ff(b, c, d, a, k[<span class="hljs-number">15</span>], <span class="hljs-number">22</span>,  <span class="hljs-number">1236535329</span>);
+
+		a = gg(a, b, c, d, k[<span class="hljs-number">1</span>], <span class="hljs-number">5</span>, -<span class="hljs-number">165796510</span>);
+		d = gg(d, a, b, c, k[<span class="hljs-number">6</span>], <span class="hljs-number">9</span>, -<span class="hljs-number">1069501632</span>);
+		c = gg(c, d, a, b, k[<span class="hljs-number">11</span>], <span class="hljs-number">14</span>,  <span class="hljs-number">643717713</span>);
+		b = gg(b, c, d, a, k[<span class="hljs-number">0</span>], <span class="hljs-number">20</span>, -<span class="hljs-number">373897302</span>);
+		a = gg(a, b, c, d, k[<span class="hljs-number">5</span>], <span class="hljs-number">5</span>, -<span class="hljs-number">701558691</span>);
+		d = gg(d, a, b, c, k[<span class="hljs-number">10</span>], <span class="hljs-number">9</span>,  <span class="hljs-number">38016083</span>);
+		c = gg(c, d, a, b, k[<span class="hljs-number">15</span>], <span class="hljs-number">14</span>, -<span class="hljs-number">660478335</span>);
+		b = gg(b, c, d, a, k[<span class="hljs-number">4</span>], <span class="hljs-number">20</span>, -<span class="hljs-number">405537848</span>);
+		a = gg(a, b, c, d, k[<span class="hljs-number">9</span>], <span class="hljs-number">5</span>,  <span class="hljs-number">568446438</span>);
+		d = gg(d, a, b, c, k[<span class="hljs-number">14</span>], <span class="hljs-number">9</span>, -<span class="hljs-number">1019803690</span>);
+		c = gg(c, d, a, b, k[<span class="hljs-number">3</span>], <span class="hljs-number">14</span>, -<span class="hljs-number">187363961</span>);
+		b = gg(b, c, d, a, k[<span class="hljs-number">8</span>], <span class="hljs-number">20</span>,  <span class="hljs-number">1163531501</span>);
+		a = gg(a, b, c, d, k[<span class="hljs-number">13</span>], <span class="hljs-number">5</span>, -<span class="hljs-number">1444681467</span>);
+		d = gg(d, a, b, c, k[<span class="hljs-number">2</span>], <span class="hljs-number">9</span>, -<span class="hljs-number">51403784</span>);
+		c = gg(c, d, a, b, k[<span class="hljs-number">7</span>], <span class="hljs-number">14</span>,  <span class="hljs-number">1735328473</span>);
+		b = gg(b, c, d, a, k[<span class="hljs-number">12</span>], <span class="hljs-number">20</span>, -<span class="hljs-number">1926607734</span>);
+
+		a = hh(a, b, c, d, k[<span class="hljs-number">5</span>], <span class="hljs-number">4</span>, -<span class="hljs-number">378558</span>);
+		d = hh(d, a, b, c, k[<span class="hljs-number">8</span>], <span class="hljs-number">11</span>, -<span class="hljs-number">2022574463</span>);
+		c = hh(c, d, a, b, k[<span class="hljs-number">11</span>], <span class="hljs-number">16</span>,  <span class="hljs-number">1839030562</span>);
+		b = hh(b, c, d, a, k[<span class="hljs-number">14</span>], <span class="hljs-number">23</span>, -<span class="hljs-number">35309556</span>);
+		a = hh(a, b, c, d, k[<span class="hljs-number">1</span>], <span class="hljs-number">4</span>, -<span class="hljs-number">1530992060</span>);
+		d = hh(d, a, b, c, k[<span class="hljs-number">4</span>], <span class="hljs-number">11</span>,  <span class="hljs-number">1272893353</span>);
+		c = hh(c, d, a, b, k[<span class="hljs-number">7</span>], <span class="hljs-number">16</span>, -<span class="hljs-number">155497632</span>);
+		b = hh(b, c, d, a, k[<span class="hljs-number">10</span>], <span class="hljs-number">23</span>, -<span class="hljs-number">1094730640</span>);
+		a = hh(a, b, c, d, k[<span class="hljs-number">13</span>], <span class="hljs-number">4</span>,  <span class="hljs-number">681279174</span>);
+		d = hh(d, a, b, c, k[<span class="hljs-number">0</span>], <span class="hljs-number">11</span>, -<span class="hljs-number">358537222</span>);
+		c = hh(c, d, a, b, k[<span class="hljs-number">3</span>], <span class="hljs-number">16</span>, -<span class="hljs-number">722521979</span>);
+		b = hh(b, c, d, a, k[<span class="hljs-number">6</span>], <span class="hljs-number">23</span>,  <span class="hljs-number">76029189</span>);
+		a = hh(a, b, c, d, k[<span class="hljs-number">9</span>], <span class="hljs-number">4</span>, -<span class="hljs-number">640364487</span>);
+		d = hh(d, a, b, c, k[<span class="hljs-number">12</span>], <span class="hljs-number">11</span>, -<span class="hljs-number">421815835</span>);
+		c = hh(c, d, a, b, k[<span class="hljs-number">15</span>], <span class="hljs-number">16</span>,  <span class="hljs-number">530742520</span>);
+		b = hh(b, c, d, a, k[<span class="hljs-number">2</span>], <span class="hljs-number">23</span>, -<span class="hljs-number">995338651</span>);
+
+		a = ii(a, b, c, d, k[<span class="hljs-number">0</span>], <span class="hljs-number">6</span>, -<span class="hljs-number">198630844</span>);
+		d = ii(d, a, b, c, k[<span class="hljs-number">7</span>], <span class="hljs-number">10</span>,  <span class="hljs-number">1126891415</span>);
+		c = ii(c, d, a, b, k[<span class="hljs-number">14</span>], <span class="hljs-number">15</span>, -<span class="hljs-number">1416354905</span>);
+		b = ii(b, c, d, a, k[<span class="hljs-number">5</span>], <span class="hljs-number">21</span>, -<span class="hljs-number">57434055</span>);
+		a = ii(a, b, c, d, k[<span class="hljs-number">12</span>], <span class="hljs-number">6</span>,  <span class="hljs-number">1700485571</span>);
+		d = ii(d, a, b, c, k[<span class="hljs-number">3</span>], <span class="hljs-number">10</span>, -<span class="hljs-number">1894986606</span>);
+		c = ii(c, d, a, b, k[<span class="hljs-number">10</span>], <span class="hljs-number">15</span>, -<span class="hljs-number">1051523</span>);
+		b = ii(b, c, d, a, k[<span class="hljs-number">1</span>], <span class="hljs-number">21</span>, -<span class="hljs-number">2054922799</span>);
+		a = ii(a, b, c, d, k[<span class="hljs-number">8</span>], <span class="hljs-number">6</span>,  <span class="hljs-number">1873313359</span>);
+		d = ii(d, a, b, c, k[<span class="hljs-number">15</span>], <span class="hljs-number">10</span>, -<span class="hljs-number">30611744</span>);
+		c = ii(c, d, a, b, k[<span class="hljs-number">6</span>], <span class="hljs-number">15</span>, -<span class="hljs-number">1560198380</span>);
+		b = ii(b, c, d, a, k[<span class="hljs-number">13</span>], <span class="hljs-number">21</span>,  <span class="hljs-number">1309151649</span>);
+		a = ii(a, b, c, d, k[<span class="hljs-number">4</span>], <span class="hljs-number">6</span>, -<span class="hljs-number">145523070</span>);
+		d = ii(d, a, b, c, k[<span class="hljs-number">11</span>], <span class="hljs-number">10</span>, -<span class="hljs-number">1120210379</span>);
+		c = ii(c, d, a, b, k[<span class="hljs-number">2</span>], <span class="hljs-number">15</span>,  <span class="hljs-number">718787259</span>);
+		b = ii(b, c, d, a, k[<span class="hljs-number">9</span>], <span class="hljs-number">21</span>, -<span class="hljs-number">343485551</span>);
+
+		x[<span class="hljs-number">0</span>] = add32(a, x[<span class="hljs-number">0</span>]);
+		x[<span class="hljs-number">1</span>] = add32(b, x[<span class="hljs-number">1</span>]);
+		x[<span class="hljs-number">2</span>] = add32(c, x[<span class="hljs-number">2</span>]);
+		x[<span class="hljs-number">3</span>] = add32(d, x[<span class="hljs-number">3</span>]);
+
+	}
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cmn</span><span class="hljs-params">(q, a, b, x, s, t)</span> {</span>
+		a = add32(add32(a, q), add32(x, t));
+		<span class="hljs-keyword">return</span> add32((a &lt;&lt; s) | (a &gt;&gt;&gt; (<span class="hljs-number">32</span> - s)), b);
+	}
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ff</span><span class="hljs-params">(a, b, c, d, x, s, t)</span> {</span>
+		<span class="hljs-keyword">return</span> cmn((b &amp; c) | ((~b) &amp; d), a, b, x, s, t);
+	}
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">gg</span><span class="hljs-params">(a, b, c, d, x, s, t)</span> {</span>
+		<span class="hljs-keyword">return</span> cmn((b &amp; d) | (c &amp; (~d)), a, b, x, s, t);
+	}
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">hh</span><span class="hljs-params">(a, b, c, d, x, s, t)</span> {</span>
+		<span class="hljs-keyword">return</span> cmn(b ^ c ^ d, a, b, x, s, t);
+	}
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ii</span><span class="hljs-params">(a, b, c, d, x, s, t)</span> {</span>
+		<span class="hljs-keyword">return</span> cmn(c ^ (b | (~d)), a, b, x, s, t);
+	}
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">call</span> <span class="hljs-params">(h, data, o)</span> {</span>
+
+		<span class="hljs-keyword">var</span> w;
+
+		<span class="hljs-comment">//break chunk into sixteen 32-bit little-endian words w[i], 0 ≤ i ≤ 15</span>
+
+		w = [
+			lil32(data, o +  <span class="hljs-number">0</span>),
+			lil32(data, o +  <span class="hljs-number">4</span>),
+			lil32(data, o +  <span class="hljs-number">8</span>),
+			lil32(data, o + <span class="hljs-number">12</span>),
+			lil32(data, o + <span class="hljs-number">16</span>),
+			lil32(data, o + <span class="hljs-number">20</span>),
+			lil32(data, o + <span class="hljs-number">24</span>),
+			lil32(data, o + <span class="hljs-number">28</span>),
+			lil32(data, o + <span class="hljs-number">32</span>),
+			lil32(data, o + <span class="hljs-number">36</span>),
+			lil32(data, o + <span class="hljs-number">40</span>),
+			lil32(data, o + <span class="hljs-number">44</span>),
+			lil32(data, o + <span class="hljs-number">48</span>),
+			lil32(data, o + <span class="hljs-number">52</span>),
+			lil32(data, o + <span class="hljs-number">56</span>),
+			lil32(data, o + <span class="hljs-number">60</span>)
+		];
+
+		cycle(h, w);
+	}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>PREPARE</p></div></div><div class="code"><div class="wrapper">	q = n / <span class="hljs-number">8</span> | <span class="hljs-number">0</span>;
+	z = q * <span class="hljs-number">8</span>;
+	u = n - z;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>append the bit &#39;1&#39; to the message</p></div></div><div class="code"><div class="wrapper">	<span class="hljs-keyword">if</span> (u &gt; <span class="hljs-number">0</span>) {
+		last = bytes[q] &amp; (~<span class="hljs-number">0</span>) &lt;&lt; (<span class="hljs-number">7</span>-u);
+	}
+	<span class="hljs-keyword">else</span> {
+		last = <span class="hljs-number">0x80</span>;
+	}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>initialize state</p></div></div><div class="code"><div class="wrapper">	h = [<span class="hljs-number">0x67452301</span>, <span class="hljs-number">0xefcdab89</span>, <span class="hljs-number">0x98badcfe</span>, <span class="hljs-number">0x10325476</span>];</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Process the message in successive 512-bit chunks:
+break message into 512-bit chunks</p></div></div><div class="code"><div class="wrapper">	m = n / <span class="hljs-number">512</span> | <span class="hljs-number">0</span>;
+	y = (n - <span class="hljs-number">512</span> * m) / <span class="hljs-number">8</span> | <span class="hljs-number">0</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>for each chunk</p></div></div><div class="code"><div class="wrapper">	o = <span class="hljs-number">0</span>;
+
+	<span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; m; ++j, o += <span class="hljs-number">64</span>) {
+		call(h, bytes, o);
+	}
+
+	tail = [];
+
+	<span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; y; ++j) {
+		tail.push(bytes[o + j]);
+	}
+
+	tail.push(last);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>append 0 ≤ k &lt; 512 bits &#39;0&#39;, so that the resulting
+message length (in bits) is congruent to 448 (mod 512)</p></div></div><div class="code"><div class="wrapper">	zeroes = (<span class="hljs-number">448</span> - (n + <span class="hljs-number">1</span>) % <span class="hljs-number">512</span>) / <span class="hljs-number">8</span> | <span class="hljs-number">0</span>;
+
+	<span class="hljs-keyword">if</span> (zeroes &lt; <span class="hljs-number">0</span>) {
+		<span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; -zeroes; ++j) {
+			tail.push(<span class="hljs-number">0</span>);
+		}
+
+		call(h, tail, <span class="hljs-number">0</span>);
+
+		zeroes = <span class="hljs-number">448</span> / <span class="hljs-number">8</span>;
+		tail = [];
+	}
+
+
+	<span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; zeroes; ++j) {
+		tail.push(<span class="hljs-number">0</span>);
+	}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>append length of message (before preparation), in bits,
+as 64-bit little-endian integer</p></div></div><div class="code"><div class="wrapper">	tail.push((n &gt;&gt;&gt;  <span class="hljs-number">0</span>) &amp; <span class="hljs-number">0xFF</span>);
+	tail.push((n &gt;&gt;&gt;  <span class="hljs-number">8</span>) &amp; <span class="hljs-number">0xFF</span>);
+	tail.push((n &gt;&gt;&gt; <span class="hljs-number">16</span>) &amp; <span class="hljs-number">0xFF</span>);
+	tail.push((n &gt;&gt;&gt; <span class="hljs-number">24</span>) &amp; <span class="hljs-number">0xFF</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>JavaScript works with 32 bit integers.
+tail.push((n &gt;&gt;&gt; 32) &amp; 0xFF);
+tail.push((n &gt;&gt;&gt; 40) &amp; 0xFF);
+tail.push((n &gt;&gt;&gt; 48) &amp; 0xFF);
+tail.push((n &gt;&gt;&gt; 56) &amp; 0xFF);</p></div></div><div class="code"><div class="wrapper">	tail.push(<span class="hljs-number">0</span>);
+	tail.push(<span class="hljs-number">0</span>);
+	tail.push(<span class="hljs-number">0</span>);
+	tail.push(<span class="hljs-number">0</span>);
+
+	call(h, tail, <span class="hljs-number">0</span>);
+
+	digest[<span class="hljs-number">0</span>]  = (h[<span class="hljs-number">0</span>] &gt;&gt;&gt;  <span class="hljs-number">0</span>) &amp; <span class="hljs-number">0xFF</span>;
+	digest[<span class="hljs-number">1</span>]  = (h[<span class="hljs-number">0</span>] &gt;&gt;&gt;  <span class="hljs-number">8</span>) &amp; <span class="hljs-number">0xFF</span>;
+	digest[<span class="hljs-number">2</span>]  = (h[<span class="hljs-number">0</span>] &gt;&gt;&gt; <span class="hljs-number">16</span>) &amp; <span class="hljs-number">0xFF</span>;
+	digest[<span class="hljs-number">3</span>]  = (h[<span class="hljs-number">0</span>] &gt;&gt;&gt; <span class="hljs-number">24</span>) &amp; <span class="hljs-number">0xFF</span>;
+	digest[<span class="hljs-number">4</span>]  = (h[<span class="hljs-number">1</span>] &gt;&gt;&gt;  <span class="hljs-number">0</span>) &amp; <span class="hljs-number">0xFF</span>;
+	digest[<span class="hljs-number">5</span>]  = (h[<span class="hljs-number">1</span>] &gt;&gt;&gt;  <span class="hljs-number">8</span>) &amp; <span class="hljs-number">0xFF</span>;
+	digest[<span class="hljs-number">6</span>]  = (h[<span class="hljs-number">1</span>] &gt;&gt;&gt; <span class="hljs-number">16</span>) &amp; <span class="hljs-number">0xFF</span>;
+	digest[<span class="hljs-number">7</span>]  = (h[<span class="hljs-number">1</span>] &gt;&gt;&gt; <span class="hljs-number">24</span>) &amp; <span class="hljs-number">0xFF</span>;
+	digest[<span class="hljs-number">8</span>]  = (h[<span class="hljs-number">2</span>] &gt;&gt;&gt;  <span class="hljs-number">0</span>) &amp; <span class="hljs-number">0xFF</span>;
+	digest[<span class="hljs-number">9</span>]  = (h[<span class="hljs-number">2</span>] &gt;&gt;&gt;  <span class="hljs-number">8</span>) &amp; <span class="hljs-number">0xFF</span>;
+	digest[<span class="hljs-number">10</span>] = (h[<span class="hljs-number">2</span>] &gt;&gt;&gt; <span class="hljs-number">16</span>) &amp; <span class="hljs-number">0xFF</span>;
+	digest[<span class="hljs-number">11</span>] = (h[<span class="hljs-number">2</span>] &gt;&gt;&gt; <span class="hljs-number">24</span>) &amp; <span class="hljs-number">0xFF</span>;
+	digest[<span class="hljs-number">12</span>] = (h[<span class="hljs-number">3</span>] &gt;&gt;&gt;  <span class="hljs-number">0</span>) &amp; <span class="hljs-number">0xFF</span>;
+	digest[<span class="hljs-number">13</span>] = (h[<span class="hljs-number">3</span>] &gt;&gt;&gt;  <span class="hljs-number">8</span>) &amp; <span class="hljs-number">0xFF</span>;
+	digest[<span class="hljs-number">14</span>] = (h[<span class="hljs-number">3</span>] &gt;&gt;&gt; <span class="hljs-number">16</span>) &amp; <span class="hljs-number">0xFF</span>;
+	digest[<span class="hljs-number">15</span>] = (h[<span class="hljs-number">3</span>] &gt;&gt;&gt; <span class="hljs-number">24</span>) &amp; <span class="hljs-number">0xFF</span>;
+
+	<span class="hljs-keyword">return</span> digest;
+
+};
+
+exports.md5fast = md5fast;</div></div></div></div></body></html>
