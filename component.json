@@ -1,0 +1,11 @@
+{
+	"version": "0.0.6",
+	"description": "hashing algorithms code bricks for JavaScript",
+	"name": "aureooms-js-hash",
+	"main": "js/dist/hash.js",
+	"repo": "aureooms/js-hash",
+	"scripts": [
+		"js/dist/hash.js"
+	],
+	"license": "AGPL-3.0"
+}
