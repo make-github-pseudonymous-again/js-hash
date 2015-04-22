@@ -1,5 +1,5 @@
 {
-	"version": "0.0.8",
+	"version": "0.0.9",
 	"description": "hashing algorithms code bricks for JavaScript",
 	"name": "aureooms-js-hash",
 	"main": "js/dist/hash.js",
