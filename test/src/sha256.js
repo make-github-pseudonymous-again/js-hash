@@ -6,9 +6,17 @@ import { list , map , product } from "aureooms-js-itertools" ;
 
 const ascii = s => list( map( c => c.charCodeAt( 0 ) , s ) ) ;
 
-test( "sha256", t => {
+function macro ( t , [ [sha256name, sha256], [string, expected] ] ) {
 
-	const inputs = product( [
+	const digest = sha256( ascii( string ), string.length * 8, array.alloc( 48 ) );
+
+	t.deepEqual( digest, expected, `${sha256name} ${string}`);
+
+}
+
+macro.title = ( provided , [ [ sha256name, sha256 ], [string, expected] ] ) => `${provided} ${sha256name} ${string}` ;
+
+const inputs = product( [
 
 	[
 		[ "sha256", hash.sha256 ]
@@ -43,14 +51,6 @@ test( "sha256", t => {
 
 	]
 
-	], 1 );
+] , 1 ) ;
 
-	for ( const [ [ sha256name, sha256 ], [string, expected] ] of inputs ) {
-
-		const digest = sha256( ascii( string ), string.length * 8, array.alloc( 32 ) );
-
-		t.deepEqual( digest, expected, sha256name + " " + string);
-
-	}
-
-} );
+for ( const x of inputs ) test( 'sha256' , macro , x ) ;
