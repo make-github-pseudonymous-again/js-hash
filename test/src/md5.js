@@ -2,19 +2,13 @@ import test from 'ava' ;
 import * as hash from '../../src' ;
 import array from "aureooms-js-array" ;
 import functools from "aureooms-js-functools" ;
-import itertools from "aureooms-js-itertools" ;
+import { list , map , product } from "aureooms-js-itertools" ;
 
-function ascii ( s ) {
-	const b = [];
-	for ( let i = 0 ; i < s.length ; ++i ) {
-		b.push( s.charCodeAt( i ) );
-	}
-	return b;
-}
+const ascii = s => list( map( c => c.charCodeAt( 0 ) , s ) ) ;
 
 test( "md5", t => {
 
-	const inputs = itertools.product( [
+	const inputs = product( [
 
 		[
 			[ "md5", hash.md5 ],
