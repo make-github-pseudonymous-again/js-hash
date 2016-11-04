@@ -54,12 +54,12 @@ test( "sha256", t => {
 
 	], 1 );
 
-	for ( const [ sha256name, sha256, string, expected ] of inputs ) {
+	for ( const [ [ sha256name, sha256 ], [string, expected] ] of inputs ) {
 
 		const digest = sha256( ascii( string ), string.length * 8, array.alloc( 32 ) );
 
 		t.deepEqual( digest, expected, sha256name + " " + string);
 
-	} ) );
+	}
 
 } );

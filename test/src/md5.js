@@ -5,9 +5,8 @@ import functools from "aureooms-js-functools" ;
 import itertools from "aureooms-js-itertools" ;
 
 function ascii ( s ) {
-	var i, b;
-	b = [];
-	for ( i = 0 ; i < s.length ; ++i ) {
+	const b = [];
+	for ( let i = 0 ; i < s.length ; ++i ) {
 		b.push( s.charCodeAt( i ) );
 	}
 	return b;
@@ -62,7 +61,7 @@ test( "md5", t => {
 
 	], 1 ) ;
 
-	for ( const [ md5name , md5 , string , expected ] of inputs ) {
+	for ( const [ [ md5name , md5 ] , [ string , expected ] ] of inputs ) {
 
 		const digest = md5( ascii( string ), string.length * 8, array.alloc( 16 ) );
 

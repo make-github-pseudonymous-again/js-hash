@@ -54,12 +54,12 @@ test( "sha384", t => {
 
 	], 1 ) ;
 
-	for ( const [ sha384name, sha384, string, expected ] of inputs ) {
+	for ( const [ [ sha384name, sha384], [string, expected] ] of inputs ) {
 
 		const digest = sha384( ascii( string ), string.length * 8, array.alloc( 48 ) );
 
 		t.deepEqual( digest, expected, sha384name + " " + string);
 
-	} ) );
+	}
 
 } );

@@ -61,12 +61,12 @@ test( "sha1", t => {
 
 	], 1) ;
 
-	for ( const [ sha1name, sha1, string, expected ] of inputs ) {
+	for ( const [ [ sha1name, sha1 ], [string, expected] ] of inputs ) {
 
 		const digest = sha1( ascii( string ), string.length * 8, array.alloc( 20 ) );
 
 		t.deepEqual( digest, expected, sha1name + " " + string);
 
-	} ) );
+	}
 
 } );
