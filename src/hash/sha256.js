@@ -1,13 +1,97 @@
 
 
+function add32 (a, b) {
+	return (a + b) & 0xffffffff;
+}
+
+function big32 (a, o) {
+	return (a[o + 0] << 24) |
+		   (a[o + 1] << 16) |
+		   (a[o + 2] <<  8) |
+			a[o + 3];
+}
+
+function cycle (state, w) {
+
+	// initialize hash value for this chunk:
+	let a = state[0];
+	let b = state[1];
+	let c = state[2];
+	let d = state[3];
+	let e = state[4];
+	let f = state[5];
+	let g = state[6];
+	let h = state[7];
+
+	//Main loop:
+	//for j from 0 to 63
+	for(let j = 0; j < 64; ++j){
+		//S1 := (e rightrotate 6) xor (e rightrotate 11) xor (e rightrotate 25)
+		const s1 = (e >>> 6 | e << 26) ^(e >>> 11 | e << 21) ^(e >>> 25 | e << 7);
+		//ch := (e and f) xor ((not e) and g)
+		const ch = (e & f) ^ ((~e) & g);
+		//temp := h + S1 + ch + k[j] + w[j]
+		let temp = add32(add32(h, s1), add32(add32(ch, k[j]), w[j]));
+		//d := d + temp;
+		const d = add32(d, temp);
+		//S0 := (a rightrotate 2) xor (a rightrotate 13) xor (a rightrotate 22)
+		const s0 = (a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^ (a >>> 22 | a << 10);
+		//maj := (a and (b xor c)) xor (b and c)
+		const maj = (a & (b ^ c)) ^ (b & c);
+		//temp := temp + S0 + maj
+		temp = add32(add32(temp, s0), maj);
+
+		h = g;
+		g = f;
+		f = e;
+		e = d;
+		d = c;
+		c = b;
+		b = a;
+		a = temp;
+	}
+
+	// Add this chunk's hash to result so far:
+	state[0] = add32(state[0], a);
+	state[1] = add32(state[1], b);
+	state[2] = add32(state[2], c);
+	state[3] = add32(state[3], d);
+	state[4] = add32(state[4], e);
+	state[5] = add32(state[5], f);
+	state[6] = add32(state[6], g);
+	state[7] = add32(state[7], h);
+}
+
+function call (h, data, o) {
+
+	const w = new Array(64);
+
+	// break chunk into sixteen 32-bit big-endian words w[i], 0 ≤ i ≤ 15
+	for (let j = 0; j < 16; ++j) {
+		w[j] = big32(data, o + j * 4);
+	}
+
+	// Extend the sixteen 32-bit words into sixty-four 32-bit words:
+	// for j from 16 to 63
+	for (let j = 16; j < 64; ++j) {
+		//s0 := (w[j-15] rightrotate 7) xor (w[j-15] rightrotate 18) xor (w[j-15] rightshift 3)
+		const s0 = (w[j-15] >>> 7 | w[j-15] << 25) ^ (w[j-15] >>> 18 | w[j-15] << 14) ^ (w[j-15] >>> 3);
+		//s1 := (w[j-2] rightrotate 17) xor (w[j-2] rightrotate 19) xor (w[j-2] rightshift 10)
+		const s1 = (w[j-2] >>> 17 | w[j-2] << 15) ^ (w[j-2] >>> 19 | w[j-2] << 13) ^ (w[j-2] >>> 10);
+		//w[j] := w[j-16] + s0 + w[j-7] + s1
+		w[j] = add32(add32(w[j-16], s0), add32(w[j-7], s1));
+	}
+
+	cycle(h, w);
+
+}
+
 /**
  * SHA-256
  */
+export function sha256 (bytes, n, digest) {
 
-var sha256 = function (bytes, n, digest) {
-	var q, z, u, last, h, m, y, o, j, tail, zeroes, k;
-
-	k = [
+	const k = [
 		0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
 		0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
 		0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
@@ -18,104 +102,15 @@ var sha256 = function (bytes, n, digest) {
 		0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
 	];
 
-	function add32 (a, b) {
-		return (a + b) & 0xffffffff;
-	}
-
-	function big32 (a, o) {
-		return (a[o + 0] << 24) |
-		       (a[o + 1] << 16) |
-		       (a[o + 2] <<  8) |
-		        a[o + 3];
-	}
-
-	function cycle (state, w) {
-
-		var j, a, b, c, d, e, f, g, h, t, s0, s1, ch, temp, maj;
-
-		// initialize hash value for this chunk:
-		a = state[0];
-		b = state[1];
-		c = state[2];
-		d = state[3];
-		e = state[4];
-		f = state[5];
-		g = state[6];
-		h = state[7];
-
-		//Main loop:
-		//for j from 0 to 63
-		for(j = 0; j < 64; ++j){
-			//S1 := (e rightrotate 6) xor (e rightrotate 11) xor (e rightrotate 25)
-			s1 = (e >>> 6 | e << 26) ^(e >>> 11 | e << 21) ^(e >>> 25 | e << 7);
-			//ch := (e and f) xor ((not e) and g)
-			ch = (e & f) ^ ((~e) & g);
-			//temp := h + S1 + ch + k[j] + w[j]
-			temp = add32(add32(h, s1), add32(add32(ch, k[j]), w[j]));
-			//d := d + temp;
-			d = add32(d, temp);
-			//S0 := (a rightrotate 2) xor (a rightrotate 13) xor (a rightrotate 22)
-			s0 = (a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^ (a >>> 22 | a << 10);
-			//maj := (a and (b xor c)) xor (b and c)
-			maj = (a & (b ^ c)) ^ (b & c);
-			//temp := temp + S0 + maj
-			temp = add32(add32(temp, s0), maj);
-
-			h = g;
-			g = f;
-			f = e;
-			e = d;
-			d = c;
-			c = b;
-			b = a;
-			a = temp;
-		}
-
-		// Add this chunk's hash to result so far:
-		state[0] = add32(state[0], a);
-		state[1] = add32(state[1], b);
-		state[2] = add32(state[2], c);
-		state[3] = add32(state[3], d);
-		state[4] = add32(state[4], e);
-		state[5] = add32(state[5], f);
-		state[6] = add32(state[6], g);
-		state[7] = add32(state[7], h);
-	}
-
-	function call (h, data, o) {
-
-		var w, j, s0, s1;
-
-		w = new Array(64);
-
-		// break chunk into sixteen 32-bit big-endian words w[i], 0 ≤ i ≤ 15
-		for (j = 0; j < 16; ++j) {
-			w[j] = big32(data, o + j * 4);
-		}
-
-		// Extend the sixteen 32-bit words into sixty-four 32-bit words:
-		// for j from 16 to 63
-		for (j = 16; j < 64; ++j) {
-			//s0 := (w[j-15] rightrotate 7) xor (w[j-15] rightrotate 18) xor (w[j-15] rightshift 3)
-			s0 = (w[j-15] >>> 7 | w[j-15] << 25) ^ (w[j-15] >>> 18 | w[j-15] << 14) ^ (w[j-15] >>> 3);
-			//s1 := (w[j-2] rightrotate 17) xor (w[j-2] rightrotate 19) xor (w[j-2] rightshift 10)
-			s1 = (w[j-2] >>> 17 | w[j-2] << 15) ^ (w[j-2] >>> 19 | w[j-2] << 13) ^ (w[j-2] >>> 10);
-			//w[j] := w[j-16] + s0 + w[j-7] + s1
-			w[j] = add32(add32(w[j-16], s0), add32(w[j-7], s1));
-		}
-
-
-		cycle(h, w);
-	}
-
 
 	// PREPARE
 
-	q = n / 8 | 0;
-	z = q * 8;
-	u = n - z;
+	const q = n / 8 | 0;
+	const z = q * 8;
+	const u = n - z;
 
 	// append the bit '1' to the message
+	let last ;
 	if (u > 0) {
 		last = bytes[q] & (~0) << (7-u);
 	}
@@ -123,34 +118,32 @@ var sha256 = function (bytes, n, digest) {
 		last = 0x80;
 	}
 
-
-
 	// Note 1: All variables are unsigned 32 bits and wrap modulo 2^32 when calculating
 	// Note 2: All constants in this pseudo code are in big endian.
 	// Within each word, the most significant byte is stored in the leftmost byte position
 
 	// Initialize state:
-	h = [0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19];
+	const h = [0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19];
 
 	// Process the message in successive 512-bit chunks:
 	// break message into 512-bit chunks
 
-	m = n / 512 | 0;
-	y = (n - 512 * m) / 8 | 0;
+	const m = n / 512 | 0;
+	const y = (n - 512 * m) / 8 | 0;
 
 	// offset in data
-	o = 0;
+	let o = 0;
 
 	// for each chunk
-	for (j = 0; j < m; ++j, o += 64) {
+	for (let j = 0; j < m; ++j, o += 64) {
 		call(h, bytes, o);
 	}
 
 	// last bytes + padding + length
-	tail = [];
+	let tail = [];
 
 	// last bytes
-	for (j = 0; j < y; ++j) {
+	for (let j = 0; j < y; ++j) {
 		tail.push(bytes[o + j]);
 	}
 
@@ -161,14 +154,14 @@ var sha256 = function (bytes, n, digest) {
 
 	// append 0 ≤ k < 512 bits '0', so that the resulting
 	// message length (in bits) is congruent to 448 (mod 512)
-	zeroes = (448 - (n + 1) % 512) / 8 | 0;
+	let zeroes = (448 - (n + 1) % 512) / 8 | 0;
 
 	if (zeroes < 0) {
 		// we need an additional block as there is
 		// not enough space left to append
 		// the length of the data in bits
 
-		for (j = 0; j < -zeroes; ++j) {
+		for (let j = 0; j < -zeroes; ++j) {
 			tail.push(0);
 		}
 
@@ -180,7 +173,7 @@ var sha256 = function (bytes, n, digest) {
 
 
 	// pad with zeroes
-	for (j = 0; j < zeroes; ++j) {
+	for (let j = 0; j < zeroes; ++j) {
 		tail.push(0);
 	}
 
@@ -196,7 +189,7 @@ var sha256 = function (bytes, n, digest) {
 	tail.push(0);
 	tail.push(0);
 	tail.push(0);
-	
+
 	tail.push((n >>> 24) & 0xff);
 	tail.push((n >>> 16) & 0xff);
 	tail.push((n >>>  8) & 0xff);
@@ -238,6 +231,5 @@ var sha256 = function (bytes, n, digest) {
 	digest[31] = (h[7] >>>  0) & 0xff;
 
 	return digest;
-};
 
-exports.sha256 = sha256;
+}

@@ -1,103 +1,96 @@
 
+function cycle (h, w) {
+
+	// initialize hash value for this chunk:
+	let a = h[0];
+	let b = h[1];
+	let c = h[2];
+	let d = h[3];
+	let e = h[4];
+
+	// Main loop:[35]
+	// for j from 0 to 79
+	for (let j = 0; j < 80; ++j) {
+
+		let f, k;
+
+		// if 0 ≤ j ≤ 19 then
+		if(0 <= j && j <= 19){
+			// f = (b and c) or ((not b) and d)
+			f = (b & c) | ((~ b) & d);
+			k = 0x5A827999;
+		}
+		// else if 20 ≤ j ≤ 39
+		else if(20 <= j && j <= 39){
+			// f = b xor c xor d
+			f = b ^ c ^ d;
+			k = 0x6ED9EBA1;
+		}
+		// else if 40 ≤ j ≤ 59
+		else if(40 <= j && j <= 59){
+			// f = (b and c) or (b and d) or (c and d)
+			f = (b & c) | (b & d) | (c & d);
+			k = 0x8F1BBCDC;
+		}
+		// else if 60 ≤ j ≤ 79
+		else{
+			// f = b xor c xor d
+			f = b ^ c ^ d;
+			k = 0xCA62C1D6;
+		}
+
+		// t = (a leftrotate 5) + f + e + k + w[j]
+		const t = add32(add32(rot32(a, 5), f), add32(add32(e, k), w[j]));
+		e = d;
+		d = c;
+		// c = b leftrotate 30
+		c = rot32(b, 30);
+		b = a;
+		a = t;
+	}
+
+	// Add this chunk's hash to result so far:
+	h[0] = add32(h[0], a);
+	h[1] = add32(h[1], b);
+	h[2] = add32(h[2], c);
+	h[3] = add32(h[3], d);
+	h[4] = add32(h[4], e);
+}
+
+function call (h, data, o) {
+
+	const w = new Array(80);
+
+	// break chunk into sixteen 32-bit big-endian words w[i], 0 ≤ i ≤ 15
+	for (let j = 0; j < 16; ++j) {
+		w[j] = big32(data, o + j * 4);
+	}
+
+	// Extend the sixteen 32-bit words into eighty 32-bit words:
+	// for j from 16 to 79
+	for(let j = 16; j < 80; ++j){
+		// w[j] = (w[j-3] xor w[j-8] xor w[j-14] xor w[j-16]) leftrotate 1
+		const k = (w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16]);
+		w[j] = rot32(k, 1);
+	}
+
+	cycle(h, w);
+
+}
 
 /**
  * SHA1
  */
-
-var sha1 = function (bytes, n, digest) {
-
-	var q, z, u, last, h, m, y, o, j, tail, zeroes;
-
-	function cycle (h, w) {
-
-		var j, f, k, a, b, c, d, e, t;
-
-		// initialize hash value for this chunk:
-		a = h[0];
-		b = h[1];
-		c = h[2];
-		d = h[3];
-		e = h[4];
-
-		// Main loop:[35]
-		// for j from 0 to 79
-		for (j = 0; j < 80; ++j) {
-
-			// if 0 ≤ j ≤ 19 then
-			if(0 <= j && j <= 19){
-				// f = (b and c) or ((not b) and d)
-				f = (b & c) | ((~ b) & d);
-				k = 0x5A827999;
-			}
-			// else if 20 ≤ j ≤ 39
-			else if(20 <= j && j <= 39){
-				// f = b xor c xor d
-				f = b ^ c ^ d;
-				k = 0x6ED9EBA1;
-			}
-			// else if 40 ≤ j ≤ 59
-			else if(40 <= j && j <= 59){
-				// f = (b and c) or (b and d) or (c and d)
-				f = (b & c) | (b & d) | (c & d);
-				k = 0x8F1BBCDC;
-			}
-			// else if 60 ≤ j ≤ 79
-			else{
-				// f = b xor c xor d
-				f = b ^ c ^ d;
-				k = 0xCA62C1D6;
-			}
-
-			// t = (a leftrotate 5) + f + e + k + w[j]
-			t = add32(add32(rot32(a, 5), f), add32(add32(e, k), w[j]));
-			e = d;
-			d = c;
-			// c = b leftrotate 30
-			c = rot32(b, 30);
-			b = a;
-			a = t;
-		}
-
-		// Add this chunk's hash to result so far:
-		h[0] = add32(h[0], a);
-		h[1] = add32(h[1], b);
-		h[2] = add32(h[2], c);
-		h[3] = add32(h[3], d);
-		h[4] = add32(h[4], e);
-	}
-
-	function call (h, data, o) {
-
-		var w, j, k;
-
-
-		w = new Array(80);
-
-		// break chunk into sixteen 32-bit big-endian words w[i], 0 ≤ i ≤ 15
-		for (j = 0; j < 16; ++j) {
-			w[j] = big32(data, o + j * 4);
-		}
-
-		// Extend the sixteen 32-bit words into eighty 32-bit words:
-		// for j from 16 to 79
-		for(j = 16; j < 80; ++j){
-			// w[j] = (w[j-3] xor w[j-8] xor w[j-14] xor w[j-16]) leftrotate 1
-			k = (w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16]);
-			w[j] = rot32(k, 1);
-		}
-
-
-		cycle(h, w);
-	}
-
+export function sha1 (bytes, n, digest) {
 
 	// PREPARE
 
-	q = n / 8 | 0;
-	z = q * 8;
-	u = n - z;
+	const q = n / 8 | 0;
+	const z = q * 8;
+	const u = n - z;
 
 	// append the bit '1' to the message
+	let last ;
 	if (u > 0) {
 		last = bytes[q] & (~0) << (7-u);
 	}
@@ -105,34 +98,32 @@ var sha1 = function (bytes, n, digest) {
 		last = 0x80;
 	}
 
-
-
 	// Note 1: All variables are unsigned 32 bits and wrap modulo 2^32 when calculating
 	// Note 2: All constants in this pseudo code are in big endian.
 	// Within each word, the most significant byte is stored in the leftmost byte position
 
 	// Initialize state:
-	h = [0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476, 0xC3D2E1F0];
+	const h = [0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476, 0xC3D2E1F0];
 
 	// Process the message in successive 512-bit chunks:
 	// break message into 512-bit chunks
 
-	m = n / 512 | 0;
-	y = (n - 512 * m) / 8 | 0;
+	const m = n / 512 | 0;
+	const y = (n - 512 * m) / 8 | 0;
 
 	// offset in data
-	o = 0;
+	let o = 0;
 
 	// for each chunk
-	for (j = 0; j < m; ++j, o += 64) {
+	for (let j = 0; j < m; ++j, o += 64) {
 		call(h, bytes, o);
 	}
 
 	// last bytes + padding + length
-	tail = [];
+	let tail = [];
 
 	// last bytes
-	for (j = 0; j < y; ++j) {
+	for (let j = 0; j < y; ++j) {
 		tail.push(bytes[o + j]);
 	}
 
@@ -143,14 +134,14 @@ var sha1 = function (bytes, n, digest) {
 
 	// append 0 ≤ k < 512 bits '0', so that the resulting
 	// message length (in bits) is congruent to 448 (mod 512)
-	zeroes = (448 - (n + 1) % 512) / 8 | 0;
+	let zeroes = (448 - (n + 1) % 512) / 8 | 0;
 
 	if (zeroes < 0) {
 		// we need an additional block as there is
 		// not enough space left to append
 		// the length of the data in bits
 
-		for (j = 0; j < -zeroes; ++j) {
+		for (let j = 0; j < -zeroes; ++j) {
 			tail.push(0);
 		}
 
@@ -162,7 +153,7 @@ var sha1 = function (bytes, n, digest) {
 
 
 	// pad with zeroes
-	for (j = 0; j < zeroes; ++j) {
+	for (let j = 0; j < zeroes; ++j) {
 		tail.push(0);
 	}
 
@@ -208,6 +199,5 @@ var sha1 = function (bytes, n, digest) {
 	digest[19] = (h[4] >>>  0) & 0xFF;
 
 	return digest;
-};
 
-exports.sha1 = sha1;
+}
