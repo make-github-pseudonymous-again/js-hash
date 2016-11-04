@@ -1,7 +1,7 @@
 {
   "name": "aureooms-js-hash",
   "description": "Hashing algorithms for JavaScript",
-  "version": "0.0.9",
+  "version": "1.0.0",
   "author": "Aurélien Ooms <aurelien.ooms@gmail.com>",
   "ava": {
     "require": [
