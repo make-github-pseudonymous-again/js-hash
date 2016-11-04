@@ -2,8 +2,8 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <base data-ice="baseUrl">
-  <title data-ice="title">aureooms/js-hash API Document</title>
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/uint32/lil32.js | aureooms/js-hash API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -56,19 +56,12 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="-js-hash-http-aureooms-github-io-js-hash-"><a href="http://aureooms.github.io/js-hash">js-hash</a></h1>
-<p>Hashing algorithms for JavaScript.</p>
-<p><a href="https://raw.githubusercontent.com/aureooms/js-hash/master/LICENSE"><img src="http://img.shields.io/npm/l/aureooms-js-hash.svg?style=flat" alt="NPM license"></a>
-<a href="https://www.npmjs.org/package/aureooms-js-hash"><img src="http://img.shields.io/npm/v/aureooms-js-hash.svg?style=flat" alt="NPM version"></a>
-<a href="https://travis-ci.org/aureooms/js-hash"><img src="http://img.shields.io/travis/aureooms/js-hash.svg?style=flat" alt="Build Status"></a>
-<a href="https://coveralls.io/r/aureooms/js-hash"><img src="http://img.shields.io/coveralls/aureooms/js-hash.svg?style=flat" alt="Coverage Status"></a>
-<a href="https://david-dm.org/aureooms/js-hash#info=dependencies"><img src="http://img.shields.io/david/aureooms/js-hash.svg?style=flat" alt="Dependencies Status"></a>
-<a href="https://david-dm.org/aureooms/js-hash#info=devDependencies"><img src="http://img.shields.io/david/dev/aureooms/js-hash.svg?style=flat" alt="devDependencies Status"></a>
-<a href="https://codeclimate.com/github/aureooms/js-hash"><img src="http://img.shields.io/codeclimate/github/aureooms/js-hash.svg?style=flat" alt="Code Climate"></a>
-<a href="https://www.npmjs.org/package/aureooms-js-hash"><img src="http://img.shields.io/npm/dm/aureooms-js-hash.svg?style=flat" alt="NPM downloads per month"></a>
-<a href="https://github.com/aureooms/js-hash/issues"><img src="http://img.shields.io/github/issues/aureooms/js-hash.svg?style=flat" alt="GitHub issues"></a>
-<a href="https://aureooms.github.io/js-hash/source.html"><img src="https://aureooms.github.io/js-hash/badge.svg" alt="Documentation"></a></p>
-</div>
+<div class="content" data-ice="content"><h1 data-ice="title">src/uint32/lil32.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">export function lil32 (a, o) {
+	return (a[o + 3] &lt;&lt; 24) | (a[o + 2] &lt;&lt; 16) | (a[o + 1] &lt;&lt; 8) | a[o + 0];
+}
+</code></pre>
+
 </div>
 
 <footer class="footer">

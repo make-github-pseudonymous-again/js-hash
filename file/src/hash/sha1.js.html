@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/hash/sha1.js | aureooms/js-hash API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-header.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-style.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/aureooms/js-hash.git" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">hash</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-md5">md5</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-md5fast">md5fast</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sha1">sha1</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sha224">sha224</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sha256">sha256</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sha384">sha384</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sha512">sha512</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">uint32</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-big32">big32</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-lil32">lil32</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-rot32">rot32</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-add32">add32</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">uint64</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-add64">add64</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-big64">big64</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-rot64">rot64</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-xor64">xor64</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-and64">and64</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-not64">not64</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-sh64">sh64</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/hash/sha1.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { big32 , rot32 , add32 } from &apos;../uint32&apos; ;
+
+function cycle (h, w) {
+
+	// initialize hash value for this chunk:
+	let a = h[0];
+	let b = h[1];
+	let c = h[2];
+	let d = h[3];
+	let e = h[4];
+
+	// Main loop:[35]
+	// for j from 0 to 79
+	for (let j = 0; j &lt; 80; ++j) {
+
+		let f, k;
+
+		// if 0 &#x2264; j &#x2264; 19 then
+		if(0 &lt;= j &amp;&amp; j &lt;= 19){
+			// f = (b and c) or ((not b) and d)
+			f = (b &amp; c) | ((~ b) &amp; d);
+			k = 0x5A827999;
+		}
+		// else if 20 &#x2264; j &#x2264; 39
+		else if(20 &lt;= j &amp;&amp; j &lt;= 39){
+			// f = b xor c xor d
+			f = b ^ c ^ d;
+			k = 0x6ED9EBA1;
+		}
+		// else if 40 &#x2264; j &#x2264; 59
+		else if(40 &lt;= j &amp;&amp; j &lt;= 59){
+			// f = (b and c) or (b and d) or (c and d)
+			f = (b &amp; c) | (b &amp; d) | (c &amp; d);
+			k = 0x8F1BBCDC;
+		}
+		// else if 60 &#x2264; j &#x2264; 79
+		else{
+			// f = b xor c xor d
+			f = b ^ c ^ d;
+			k = 0xCA62C1D6;
+		}
+
+		// t = (a leftrotate 5) + f + e + k + w[j]
+		const t = add32(add32(rot32(a, 5), f), add32(add32(e, k), w[j]));
+		e = d;
+		d = c;
+		// c = b leftrotate 30
+		c = rot32(b, 30);
+		b = a;
+		a = t;
+	}
+
+	// Add this chunk&apos;s hash to result so far:
+	h[0] = add32(h[0], a);
+	h[1] = add32(h[1], b);
+	h[2] = add32(h[2], c);
+	h[3] = add32(h[3], d);
+	h[4] = add32(h[4], e);
+}
+
+function call (h, data, o) {
+
+	const w = new Array(80);
+
+	// break chunk into sixteen 32-bit big-endian words w[i], 0 &#x2264; i &#x2264; 15
+	for (let j = 0; j &lt; 16; ++j) {
+		w[j] = big32(data, o + j * 4);
+	}
+
+	// Extend the sixteen 32-bit words into eighty 32-bit words:
+	// for j from 16 to 79
+	for(let j = 16; j &lt; 80; ++j){
+		// w[j] = (w[j-3] xor w[j-8] xor w[j-14] xor w[j-16]) leftrotate 1
+		const k = (w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16]);
+		w[j] = rot32(k, 1);
+	}
+
+	cycle(h, w);
+
+}
+
+/**
+ * SHA1
+ */
+export function sha1 (bytes, n, digest) {
+
+	// PREPARE
+
+	const q = n / 8 | 0;
+	const z = q * 8;
+	const u = n - z;
+
+	// append the bit &apos;1&apos; to the message
+	let last ;
+	if (u &gt; 0) {
+		last = bytes[q] &amp; (~0) &lt;&lt; (7-u);
+	}
+	else {
+		last = 0x80;
+	}
+
+	// Note 1: All variables are unsigned 32 bits and wrap modulo 2^32 when calculating
+	// Note 2: All constants in this pseudo code are in big endian.
+	// Within each word, the most significant byte is stored in the leftmost byte position
+
+	// Initialize state:
+	const h = [0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476, 0xC3D2E1F0];
+
+	// Process the message in successive 512-bit chunks:
+	// break message into 512-bit chunks
+
+	const m = n / 512 | 0;
+	const y = (n - 512 * m) / 8 | 0;
+
+	// offset in data
+	let o = 0;
+
+	// for each chunk
+	for (let j = 0; j &lt; m; ++j, o += 64) {
+		call(h, bytes, o);
+	}
+
+	// last bytes + padding + length
+	let tail = [];
+
+	// last bytes
+	for (let j = 0; j &lt; y; ++j) {
+		tail.push(bytes[o + j]);
+	}
+
+	// special care taken for the very last byte which could
+	// have been modified if n is not a multiple of 8
+	tail.push(last);
+
+
+	// append 0 &#x2264; k &lt; 512 bits &apos;0&apos;, so that the resulting
+	// message length (in bits) is congruent to 448 (mod 512)
+	let zeroes = (448 - (n + 1) % 512) / 8 | 0;
+
+	if (zeroes &lt; 0) {
+		// we need an additional block as there is
+		// not enough space left to append
+		// the length of the data in bits
+
+		for (let j = 0; j &lt; -zeroes; ++j) {
+			tail.push(0);
+		}
+
+		call(h, tail, 0);
+
+		zeroes = 448 / 8;
+		tail = [];
+	}
+
+
+	// pad with zeroes
+	for (let j = 0; j &lt; zeroes; ++j) {
+		tail.push(0);
+	}
+
+	// append length of message (before preparation), in bits,
+	// as 64-bit big-endian integer
+
+	// JavaScript works with 32 bit integers.
+	// tail.push((n &gt;&gt;&gt; 56) &amp; 0xFF);
+	// tail.push((n &gt;&gt;&gt; 48) &amp; 0xFF);
+	// tail.push((n &gt;&gt;&gt; 40) &amp; 0xFF);
+	// tail.push((n &gt;&gt;&gt; 32) &amp; 0xFF);
+	tail.push(0);
+	tail.push(0);
+	tail.push(0);
+	tail.push(0);
+
+	tail.push((n &gt;&gt;&gt; 24) &amp; 0xFF);
+	tail.push((n &gt;&gt;&gt; 16) &amp; 0xFF);
+	tail.push((n &gt;&gt;&gt;  8) &amp; 0xFF);
+	tail.push((n &gt;&gt;&gt;  0) &amp; 0xFF);
+
+	call(h, tail, 0);
+
+	digest[0]  = (h[0] &gt;&gt;&gt; 24) &amp; 0xFF;
+	digest[1]  = (h[0] &gt;&gt;&gt; 16) &amp; 0xFF;
+	digest[2]  = (h[0] &gt;&gt;&gt;  8) &amp; 0xFF;
+	digest[3]  = (h[0] &gt;&gt;&gt;  0) &amp; 0xFF;
+	digest[4]  = (h[1] &gt;&gt;&gt; 24) &amp; 0xFF;
+	digest[5]  = (h[1] &gt;&gt;&gt; 16) &amp; 0xFF;
+	digest[6]  = (h[1] &gt;&gt;&gt;  8) &amp; 0xFF;
+	digest[7]  = (h[1] &gt;&gt;&gt;  0) &amp; 0xFF;
+	digest[8]  = (h[2] &gt;&gt;&gt; 24) &amp; 0xFF;
+	digest[9]  = (h[2] &gt;&gt;&gt; 16) &amp; 0xFF;
+	digest[10] = (h[2] &gt;&gt;&gt;  8) &amp; 0xFF;
+	digest[11] = (h[2] &gt;&gt;&gt;  0) &amp; 0xFF;
+	digest[12] = (h[3] &gt;&gt;&gt; 24) &amp; 0xFF;
+	digest[13] = (h[3] &gt;&gt;&gt; 16) &amp; 0xFF;
+	digest[14] = (h[3] &gt;&gt;&gt;  8) &amp; 0xFF;
+	digest[15] = (h[3] &gt;&gt;&gt;  0) &amp; 0xFF;
+	digest[16] = (h[4] &gt;&gt;&gt; 24) &amp; 0xFF;
+	digest[17] = (h[4] &gt;&gt;&gt; 16) &amp; 0xFF;
+	digest[18] = (h[4] &gt;&gt;&gt;  8) &amp; 0xFF;
+	digest[19] = (h[4] &gt;&gt;&gt;  0) &amp; 0xFF;
+
+	return digest;
+
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

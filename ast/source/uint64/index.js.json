@@ -1,0 +1,273 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExportAllDeclaration",
+      "source": {
+        "type": "Literal",
+        "value": "./add64",
+        "raw": "'./add64'",
+        "range": [
+          14,
+          23
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 14
+          },
+          "end": {
+            "line": 1,
+            "column": 23
+          }
+        }
+      },
+      "range": [
+        0,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "ExportAllDeclaration",
+      "source": {
+        "type": "Literal",
+        "value": "./and64",
+        "raw": "'./and64'",
+        "range": [
+          40,
+          49
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 14
+          },
+          "end": {
+            "line": 2,
+            "column": 23
+          }
+        }
+      },
+      "range": [
+        26,
+        51
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "ExportAllDeclaration",
+      "source": {
+        "type": "Literal",
+        "value": "./big64",
+        "raw": "'./big64'",
+        "range": [
+          66,
+          75
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 14
+          },
+          "end": {
+            "line": 3,
+            "column": 23
+          }
+        }
+      },
+      "range": [
+        52,
+        77
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "ExportAllDeclaration",
+      "source": {
+        "type": "Literal",
+        "value": "./not64",
+        "raw": "'./not64'",
+        "range": [
+          92,
+          101
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 14
+          },
+          "end": {
+            "line": 4,
+            "column": 23
+          }
+        }
+      },
+      "range": [
+        78,
+        103
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "ExportAllDeclaration",
+      "source": {
+        "type": "Literal",
+        "value": "./rot64",
+        "raw": "'./rot64'",
+        "range": [
+          118,
+          127
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 14
+          },
+          "end": {
+            "line": 5,
+            "column": 23
+          }
+        }
+      },
+      "range": [
+        104,
+        129
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "ExportAllDeclaration",
+      "source": {
+        "type": "Literal",
+        "value": "./sh64",
+        "raw": "'./sh64'",
+        "range": [
+          144,
+          152
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 14
+          },
+          "end": {
+            "line": 6,
+            "column": 22
+          }
+        }
+      },
+      "range": [
+        130,
+        154
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "ExportAllDeclaration",
+      "source": {
+        "type": "Literal",
+        "value": "./xor64",
+        "raw": "'./xor64'",
+        "range": [
+          169,
+          178
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 14
+          },
+          "end": {
+            "line": 7,
+            "column": 23
+          }
+        }
+      },
+      "range": [
+        155,
+        180
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 25
+        }
+      }
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    180
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 7,
+      "column": 25
+    }
+  },
+  "comments": []
+}
