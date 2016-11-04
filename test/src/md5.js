@@ -14,8 +14,6 @@ function ascii ( s ) {
 
 test( "md5", t => {
 
-	console.log( "=====================  MD5 ======================" );
-
 	const inputs = itertools.product( [
 
 		[

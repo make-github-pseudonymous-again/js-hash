@@ -15,8 +15,6 @@ function ascii ( s ) {
 
 test( "sha1", t => {
 
-	console.log( "===================== SHA1 ======================" );
-
 	const inputs = itertools.product( [
 
 	[
