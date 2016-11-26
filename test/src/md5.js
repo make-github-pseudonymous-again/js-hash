@@ -8,7 +8,7 @@ const ascii = s => list( map( c => c.charCodeAt( 0 ) , s ) ) ;
 
 function macro ( t , [ [md5name, md5], [string, expected] ] ) {
 
-	const digest = md5( ascii( string ), string.length * 8, array.alloc( 48 ) );
+	const digest = md5( ascii( string ), string.length * 8, array.alloc( 16 ) );
 
 	t.deepEqual( digest, expected, `${md5name} ${string}`);
 

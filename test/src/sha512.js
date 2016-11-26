@@ -8,7 +8,7 @@ const ascii = s => list( map( c => c.charCodeAt( 0 ) , s ) ) ;
 
 function macro ( t , [ [sha512name, sha512], [string, expected] ] ) {
 
-	const digest = sha512( ascii( string ), string.length * 8, array.alloc( 48 ) );
+	const digest = sha512( ascii( string ), string.length * 8, array.alloc( 64 ) );
 
 	t.deepEqual( digest, expected, `${sha512name} ${string}`);
 

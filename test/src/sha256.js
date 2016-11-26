@@ -8,7 +8,7 @@ const ascii = s => list( map( c => c.charCodeAt( 0 ) , s ) ) ;
 
 function macro ( t , [ [sha256name, sha256], [string, expected] ] ) {
 
-	const digest = sha256( ascii( string ), string.length * 8, array.alloc( 48 ) );
+	const digest = sha256( ascii( string ), string.length * 8, array.alloc( 32 ) );
 
 	t.deepEqual( digest, expected, `${sha256name} ${string}`);
 
