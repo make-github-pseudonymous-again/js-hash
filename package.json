@@ -1,7 +1,7 @@
 {
   "name": "aureooms-js-hash",
   "description": "Hashing algorithms for JavaScript",
-  "version": "0.0.9",
+  "version": "1.0.0",
   "author": "Aurélien Ooms <aurelien.ooms@gmail.com>",
   "ava": {
     "require": [
@@ -26,15 +26,15 @@
   "devDependencies": {
     "aureooms-js-array": "^3.1.0",
     "aureooms-js-functools": "^2.0.3",
-    "aureooms-js-itertools": "^1.3.0",
-    "ava": "^0.16.0",
+    "aureooms-js-itertools": "^3.1.1",
+    "ava": "^0.17.0",
     "babel-cli": "^6.18.0",
     "babel-polyfill": "^6.16.0",
     "babel-preset-latest": "^6.16.0",
     "codeclimate-test-reporter": "^0.4.0",
-    "coveralls": "^2.11.14",
+    "coveralls": "^2.11.15",
     "esdoc": "^0.4.8",
-    "nyc": "^8.4.0"
+    "nyc": "^10.0.0"
   },
   "homepage": "http://aureooms.github.io/js-hash",
   "keywords": [
