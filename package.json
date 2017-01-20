@@ -11,7 +11,7 @@
   },
   "babel": {
     "presets": [
-      "latest"
+      "env"
     ],
     "env": {
       "development": {
@@ -30,7 +30,7 @@
     "ava": "^0.17.0",
     "babel-cli": "^6.22.2",
     "babel-polyfill": "^6.22.0",
-    "babel-preset-latest": "^6.22.0",
+    "babel-preset-env": "^1.1.8",
     "codeclimate-test-reporter": "^0.4.0",
     "coveralls": "^2.11.15",
     "esdoc": "^0.5.2",
