@@ -10,5 +10,5 @@ Then
 ```js
 const hash = require( 'aureooms-js-hash' ) ;
 // or
-import hash from 'aureooms-js-hash' ;
+import * as hash from 'aureooms-js-hash' ;
 ```
