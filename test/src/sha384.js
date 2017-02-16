@@ -1,8 +1,8 @@
 import test from 'ava' ;
 import * as hash from '../../src' ;
-import array from "aureooms-js-array" ;
-import functools from "aureooms-js-functools" ;
-import { list , map , product } from "aureooms-js-itertools" ;
+import array from "@aureooms/js-array" ;
+import functools from "@aureooms/js-functools" ;
+import { list , map , product } from "@aureooms/js-itertools" ;
 
 const ascii = s => list( map( c => c.charCodeAt( 0 ) , s ) ) ;
 
