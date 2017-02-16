@@ -8,7 +8,7 @@ import 'babel-polyfill' ;
 
 Then
 ```js
-const hash = require( 'aureooms-js-hash' ) ;
+const hash = require( '@aureooms/js-hash' ) ;
 // or
-import * as hash from 'aureooms-js-hash' ;
+import * as hash from '@aureooms/js-hash' ;
 ```
