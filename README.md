@@ -2,7 +2,7 @@
 
 Hashing algorithms for JavaScript.
 
-[![NPM license](https://img.shields.io/npm/l/@aureooms/js-hash.svg?style=flat)](https://raw.githubusercontent.com/aureooms/js-hash/master/LICENSE)
+[![License](https://img.shields.io/github/license/aureooms/js-hash.svg?style=flat)](https://raw.githubusercontent.com/aureooms/js-hash/master/LICENSE)
 [![NPM version](https://img.shields.io/npm/v/@aureooms/js-hash.svg?style=flat)](https://www.npmjs.org/package/@aureooms/js-hash)
 [![Build Status](https://img.shields.io/travis/aureooms/js-hash.svg?style=flat)](https://travis-ci.org/aureooms/js-hash)
 [![Coverage Status](https://img.shields.io/coveralls/aureooms/js-hash.svg?style=flat)](https://coveralls.io/r/aureooms/js-hash)
