@@ -1,6 +1,6 @@
 import test from 'ava' ;
 import * as hash from '../../src' ;
-import array from "@aureooms/js-array" ;
+import { alloc } from "@aureooms/js-array" ;
 import functools from "@aureooms/js-functools" ;
 import { list , map , product } from "@aureooms/js-itertools" ;
 
@@ -8,7 +8,7 @@ const ascii = s => list( map( c => c.charCodeAt( 0 ) , s ) ) ;
 
 function macro ( t , [ [sha224name, sha224], [string, expected] ] ) {
 
-	const digest = sha224( ascii( string ), string.length * 8, array.alloc( 28 ) );
+	const digest = sha224( ascii( string ), string.length * 8, alloc( 28 ) );
 
 	t.deepEqual( digest, expected, `${sha224name} ${string}`);
 
