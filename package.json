@@ -22,7 +22,9 @@
   "bugs": {
     "url": "https://github.com/aureooms/js-hash/issues"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@aureooms/js-uint64": "^0.0.5"
+  },
   "devDependencies": {
     "@aureooms/js-array": "^4.0.0",
     "@aureooms/js-functools": "^2.0.3",
