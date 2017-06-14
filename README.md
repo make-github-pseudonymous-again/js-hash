@@ -1,6 +1,16 @@
-# [js-hash](http://aureooms.github.io/js-hash)
+[@aureooms/js-hash](https://aureooms.github.io/js-hash)
+==
 
 Hashing algorithms for JavaScript.
+See [docs](https://aureooms.github.io/js-hash).
+Parent is [@aureooms/js-algorithms](https://github.com/aureooms/js-algorithms).
+
+```js
+const string = 'The quick brown fox jumps over the lazy dog' ;
+const ascii = s => list( map( c => c.charCodeAt( 0 ) , s ) ) ;
+const digest = sha512( ascii( string ), string.length * 8, alloc( 64 ) );
+digest; // [0x07, 0xe5, 0x47, 0xd9, 0x58, 0x6f, 0x6a, 0x73, 0xf7, 0x3f, ...]
+```
 
 [![License](https://img.shields.io/github/license/aureooms/js-hash.svg?style=flat)](https://raw.githubusercontent.com/aureooms/js-hash/master/LICENSE)
 [![NPM version](https://img.shields.io/npm/v/@aureooms/js-hash.svg?style=flat)](https://www.npmjs.org/package/@aureooms/js-hash)
