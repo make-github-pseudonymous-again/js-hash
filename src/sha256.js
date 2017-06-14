@@ -1,4 +1,4 @@
-import { add32 , big32 } from '../uint32' ;
+import { add32 , big32 } from '@aureooms/js-uint32' ;
 
 const k = [
 	0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
@@ -9,7 +9,7 @@ const k = [
 	0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
 	0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
 	0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
-];
+] ;
 
 function cycle (state, w) {
 
@@ -60,7 +60,6 @@ function cycle (state, w) {
 	state[5] = add32(state[5], f);
 	state[6] = add32(state[6], g);
 	state[7] = add32(state[7], h);
-
 }
 
 function call (h, data, o) {
@@ -87,15 +86,10 @@ function call (h, data, o) {
 
 }
 
-
 /**
- * SHA-224
- *
- * SHA-224 is identical to SHA-256, except that:
- *  - the initial variable values h0 through h7 are different, and
- *  - the output is constructed by omitting h7.
+ * SHA-256
  */
-export function sha224 (bytes, n, digest) {
+export function sha256 (bytes, n, digest) {
 
 	// PREPARE
 
@@ -112,14 +106,12 @@ export function sha224 (bytes, n, digest) {
 		last = 0x80;
 	}
 
-
-
 	// Note 1: All variables are unsigned 32 bits and wrap modulo 2^32 when calculating
 	// Note 2: All constants in this pseudo code are in big endian.
 	// Within each word, the most significant byte is stored in the leftmost byte position
 
 	// Initialize state:
-	const h = [0xc1059ed8, 0x367cd507, 0x3070dd17, 0xf70e5939, 0xffc00b31, 0x68581511, 0x64f98fa7, 0xbefa4fa4];
+	const h = [0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19];
 
 	// Process the message in successive 512-bit chunks:
 	// break message into 512-bit chunks
@@ -221,6 +213,10 @@ export function sha224 (bytes, n, digest) {
 	digest[25] = (h[6] >>> 16) & 0xff;
 	digest[26] = (h[6] >>>  8) & 0xff;
 	digest[27] = (h[6] >>>  0) & 0xff;
+	digest[28] = (h[7] >>> 24) & 0xff;
+	digest[29] = (h[7] >>> 16) & 0xff;
+	digest[30] = (h[7] >>>  8) & 0xff;
+	digest[31] = (h[7] >>>  0) & 0xff;
 
 	return digest;
 

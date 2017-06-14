@@ -1,4 +1,4 @@
-import { big32 , rot32 , add32 } from '../uint32' ;
+import { big32 , rot32 , add32 } from '@aureooms/js-uint32' ;
 
 function cycle (h, w) {
 

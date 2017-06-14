@@ -1,4 +1,4 @@
-import { lil32 , add32 } from '../uint32' ;
+import { lil32 , add32 } from '@aureooms/js-uint32' ;
 
 
 function cycle(x, k) {
