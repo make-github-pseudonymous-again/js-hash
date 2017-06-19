@@ -1,4 +1,4 @@
-import { lil32 , add32 } from '@aureooms/js-uint32' ;
+import { get32 , lil32 , add32 } from '@aureooms/js-uint32' ;
 
 
 function cycle(x, k) {
@@ -148,7 +148,12 @@ export function md5fast (bytes, n, digest) {
 	}
 
 	// initialize state
-	const h = [0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476];
+	const h = [
+		get32(0x67452301),
+		get32(0xefcdab89),
+		get32(0x98badcfe),
+		get32(0x10325476),
+	] ;
 
 	// Process the message in successive 512-bit chunks:
 	// break message into 512-bit chunks

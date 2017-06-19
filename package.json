@@ -23,7 +23,7 @@
     "url": "https://github.com/aureooms/js-hash/issues"
   },
   "dependencies": {
-    "@aureooms/js-uint32": "^0.1.4",
+    "@aureooms/js-uint32": "^1.0.1",
     "@aureooms/js-uint64": "^2.0.1"
   },
   "devDependencies": {

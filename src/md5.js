@@ -1,4 +1,4 @@
-import { add32 , rot32 , lil32 } from '@aureooms/js-uint32' ;
+import { get32 , add32 , rotl32 , lil32 } from '@aureooms/js-uint32' ;
 
 function cycle (h, k, r, w) {
 
@@ -33,7 +33,7 @@ function cycle (h, k, r, w) {
 		const t = d;
 		d = c;
 		c = b;
-		b = add32(b, rot32(add32(add32(a, f), add32(k[i], w[g])) , r[i]));
+		b = add32(b, rotl32(add32(add32(a, f), add32(k[i], w[g])) , r[i]));
 		a = t;
 
 	}
@@ -79,23 +79,23 @@ function call (h, k, r, data, o) {
 export function md5 (bytes, n, digest) {
 
 	const k = [
-		0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee ,
-		0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501 ,
-		0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be ,
-		0x6b901122, 0xfd987193, 0xa679438e, 0x49b40821 ,
-		0xf61e2562, 0xc040b340, 0x265e5a51, 0xe9b6c7aa ,
-		0xd62f105d, 0x02441453, 0xd8a1e681, 0xe7d3fbc8 ,
-		0x21e1cde6, 0xc33707d6, 0xf4d50d87, 0x455a14ed ,
-		0xa9e3e905, 0xfcefa3f8, 0x676f02d9, 0x8d2a4c8a ,
-		0xfffa3942, 0x8771f681, 0x6d9d6122, 0xfde5380c ,
-		0xa4beea44, 0x4bdecfa9, 0xf6bb4b60, 0xbebfbc70 ,
-		0x289b7ec6, 0xeaa127fa, 0xd4ef3085, 0x04881d05 ,
-		0xd9d4d039, 0xe6db99e5, 0x1fa27cf8, 0xc4ac5665 ,
-		0xf4292244, 0x432aff97, 0xab9423a7, 0xfc93a039 ,
-		0x655b59c3, 0x8f0ccc92, 0xffeff47d, 0x85845dd1 ,
-		0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1 ,
-		0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391
-	];
+		get32(0xd76aa478), get32(0xe8c7b756), get32(0x242070db), get32(0xc1bdceee),
+		get32(0xf57c0faf), get32(0x4787c62a), get32(0xa8304613), get32(0xfd469501),
+		get32(0x698098d8), get32(0x8b44f7af), get32(0xffff5bb1), get32(0x895cd7be),
+		get32(0x6b901122), get32(0xfd987193), get32(0xa679438e), get32(0x49b40821),
+		get32(0xf61e2562), get32(0xc040b340), get32(0x265e5a51), get32(0xe9b6c7aa),
+		get32(0xd62f105d), get32(0x02441453), get32(0xd8a1e681), get32(0xe7d3fbc8),
+		get32(0x21e1cde6), get32(0xc33707d6), get32(0xf4d50d87), get32(0x455a14ed),
+		get32(0xa9e3e905), get32(0xfcefa3f8), get32(0x676f02d9), get32(0x8d2a4c8a),
+		get32(0xfffa3942), get32(0x8771f681), get32(0x6d9d6122), get32(0xfde5380c),
+		get32(0xa4beea44), get32(0x4bdecfa9), get32(0xf6bb4b60), get32(0xbebfbc70),
+		get32(0x289b7ec6), get32(0xeaa127fa), get32(0xd4ef3085), get32(0x04881d05),
+		get32(0xd9d4d039), get32(0xe6db99e5), get32(0x1fa27cf8), get32(0xc4ac5665),
+		get32(0xf4292244), get32(0x432aff97), get32(0xab9423a7), get32(0xfc93a039),
+		get32(0x655b59c3), get32(0x8f0ccc92), get32(0xffeff47d), get32(0x85845dd1),
+		get32(0x6fa87e4f), get32(0xfe2ce6e0), get32(0xa3014314), get32(0x4e0811a1),
+		get32(0xf7537e82), get32(0xbd3af235), get32(0x2ad7d2bb), get32(0xeb86d391),
+	] ;
 
 	const r = [
 		7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
@@ -119,10 +119,13 @@ export function md5 (bytes, n, digest) {
 		last = 0x80;
 	}
 
-
-
 	// initialize state
-	const h = [0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476];
+	const h = [
+		get32(0x67452301),
+		get32(0xefcdab89),
+		get32(0x98badcfe),
+		get32(0x10325476),
+	] ;
 
 	// Process the message in successive 512-bit chunks:
 	// break message into 512-bit chunks

@@ -1,4 +1,4 @@
-import { big32 , rot32 , add32 } from '@aureooms/js-uint32' ;
+import { get32 , big32 , rotl32 , add32 } from '@aureooms/js-uint32' ;
 
 function cycle (h, w) {
 
@@ -19,33 +19,33 @@ function cycle (h, w) {
 		if(0 <= j && j <= 19){
 			// f = (b and c) or ((not b) and d)
 			f = (b & c) | ((~ b) & d);
-			k = 0x5A827999;
+			k = 1518500249 ; // 0x5A827999
 		}
 		// else if 20 ≤ j ≤ 39
 		else if(20 <= j && j <= 39){
 			// f = b xor c xor d
 			f = b ^ c ^ d;
-			k = 0x6ED9EBA1;
+			k = 1859775393 ; // 0x6ED9EBA1
 		}
 		// else if 40 ≤ j ≤ 59
 		else if(40 <= j && j <= 59){
 			// f = (b and c) or (b and d) or (c and d)
 			f = (b & c) | (b & d) | (c & d);
-			k = 0x8F1BBCDC;
+			k = -1894007588 ; // 0x8F1BBCDC
 		}
 		// else if 60 ≤ j ≤ 79
 		else{
 			// f = b xor c xor d
 			f = b ^ c ^ d;
-			k = 0xCA62C1D6;
+			k = -899497514 ; // 0xCA62C1D6
 		}
 
 		// t = (a leftrotate 5) + f + e + k + w[j]
-		const t = add32(add32(rot32(a, 5), f), add32(add32(e, k), w[j]));
+		const t = add32(add32(rotl32(a, 5), f), add32(add32(e, k), w[j]));
 		e = d;
 		d = c;
 		// c = b leftrotate 30
-		c = rot32(b, 30);
+		c = rotl32(b, 30);
 		b = a;
 		a = t;
 	}
@@ -72,7 +72,7 @@ function call (h, data, o) {
 	for(let j = 16; j < 80; ++j){
 		// w[j] = (w[j-3] xor w[j-8] xor w[j-14] xor w[j-16]) leftrotate 1
 		const k = (w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16]);
-		w[j] = rot32(k, 1);
+		w[j] = rotl32(k, 1);
 	}
 
 	cycle(h, w);
@@ -104,7 +104,13 @@ export function sha1 (bytes, n, digest) {
 	// Within each word, the most significant byte is stored in the leftmost byte position
 
 	// Initialize state:
-	const h = [0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476, 0xC3D2E1F0];
+	const h = [
+		get32(0x67452301),
+		get32(0xEFCDAB89),
+		get32(0x98BADCFE),
+		get32(0x10325476),
+		get32(0xC3D2E1F0),
+	] ;
 
 	// Process the message in successive 512-bit chunks:
 	// break message into 512-bit chunks
