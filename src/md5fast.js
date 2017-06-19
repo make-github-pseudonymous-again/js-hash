@@ -1,6 +1,5 @@
 import { get32 , lil32 , add32 } from '@aureooms/js-uint32' ;
 
-
 function cycle(x, k) {
 	let a = x[0], b = x[1], c = x[2], d = x[3];
 
