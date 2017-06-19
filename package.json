@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@aureooms/js-uint32": "^0.1.4",
-    "@aureooms/js-uint64": "^0.0.5"
+    "@aureooms/js-uint64": "^2.0.1"
   },
   "devDependencies": {
     "@aureooms/js-array": "^4.0.0",
