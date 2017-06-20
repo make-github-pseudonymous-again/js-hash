@@ -25,7 +25,7 @@ const k = [
 	get64(0x4cc5d4be, 0xcb3e42b6), get64(0x597f299c, 0xfc657e2a), get64(0x5fcb6fab, 0x3ad6faec), get64(0x6c44198c, 0x4a475817),
 ] ;
 
-function cycle (state, w) {
+export function sha512_cycle (state, w) {
 
 	// initialize hash value for this chunk:
 	let a = state[0];
@@ -76,7 +76,7 @@ function cycle (state, w) {
 	state[7] = add64(state[7], h);
 }
 
-function call (h, data, o) {
+export function sha512_call (h, data, o) {
 
 	const w = new Array(80);
 
@@ -96,22 +96,14 @@ function call (h, data, o) {
 		w[j] = add64(add64(w[j-16], s0), add64(w[j-7], s1));
 	}
 
-	cycle(h, w);
+	sha512_cycle(h, w);
 
 }
 
+export function sha512_initial_state ( ) {
 
-/**
- * SHA-512
- */
-export function sha512 (bytes, n, digest) {
-
-	// Note 1: All variables are unsigned 64 bits and wrap modulo 2^64 when calculating
-	// Note 2: All constants in this pseudo code are big endian
-
-	// Initialize variables
 	// (first 64 bits of the fractional parts of the square roots of the first 8 primes 2..19):
-	const h = [
+	return [
 		get64(0x6a09e667, 0xf3bcc908),
 		get64(0xbb67ae85, 0x84caa73b),
 		get64(0x3c6ef372, 0xfe94f82b),
@@ -122,35 +114,10 @@ export function sha512 (bytes, n, digest) {
 		get64(0x5be0cd19, 0x137e2179),
 	] ;
 
-	// PREPARE
-
-	const q = n / 8 | 0;
-	const z = q * 8;
-	const u = n - z;
-
-	// append the bit '1' to the message
-	let last ;
-	if (u > 0) {
-		last = bytes[q] & (~0) << (7-u);
-	}
-	else {
-		last = 0x80;
-	}
+}
 
 
-	// Process the message in successive 1024-bit chunks:
-	// break message into 1024-bit chunks
-
-	const m = n / 1024 | 0;
-	const y = (n - 1024 * m) / 8 | 0;
-
-	// offset in data
-	let o = 0;
-
-	// for each chunk
-	for (let j = 0; j < m; ++j, o += 128) {
-		call(h, bytes, o);
-	}
+export function sha512_finalize (bytes, n, digest, y, o, right, h) {
 
 	// last bytes + padding + length
 	let tail = [];
@@ -160,8 +127,14 @@ export function sha512 (bytes, n, digest) {
 		tail.push(bytes[o + j]);
 	}
 
+	const q = right / 8 | 0;
+	const z = q * 8;
+	const u = right - z;
+
+	// append the bit '1' to the message
 	// special care taken for the very last byte which could
 	// have been modified if n is not a multiple of 8
+	const last = u > 0 ? bytes[q] & (~0) << (7-u) : 0x80 ;
 	tail.push(last);
 
 
@@ -179,7 +152,7 @@ export function sha512 (bytes, n, digest) {
 			tail.push(0);
 		}
 
-		call(h, tail, 0);
+		sha512_call(h, tail, 0);
 
 		zeroes = 896 / 8;
 		tail = [];
@@ -225,7 +198,7 @@ export function sha512 (bytes, n, digest) {
 	tail.push((n >>>  8) & 0xff);
 	tail.push((n >>>  0) & 0xff);
 
-	call(h, tail, 0);
+	sha512_call(h, tail, 0);
 
 	for (let i = 0, j = 0; j < 8; ++j) {
 		digest[i] = (h[j][0] >>> 24) & 0xff;
@@ -247,5 +220,35 @@ export function sha512 (bytes, n, digest) {
 	}
 
 	return digest;
+
+}
+
+
+/**
+ * SHA-512
+ */
+export function sha512 (bytes, n, digest) {
+
+	// Note 1: All variables are unsigned 64 bits and wrap modulo 2^64 when calculating
+	// Note 2: All constants in this pseudo code are big endian
+
+	// Initialize state
+	const h = sha512_initial_state();
+
+	// Process the message in successive 1024-bit chunks:
+	// break message into 1024-bit chunks
+	const m = n / 1024 | 0;
+
+	// offset in data
+	let o = 0;
+
+	// for each chunk
+	for (let j = 0; j < m; ++j, o += 128) {
+		sha512_call(h, bytes, o);
+	}
+
+	const y = (n - 1024 * m) / 8 | 0;
+
+	return sha512_finalize(bytes, n, digest, y, o, n, h);
 
 }
