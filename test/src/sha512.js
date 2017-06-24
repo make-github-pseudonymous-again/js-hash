@@ -1,14 +1,12 @@
 import test from 'ava' ;
 import * as hash from '../../src' ;
 import { alloc } from "@aureooms/js-array" ;
-import functools from "@aureooms/js-functools" ;
-import { list , map , product } from "@aureooms/js-itertools" ;
-
-const ascii = s => list( map( c => c.charCodeAt( 0 ) , s ) ) ;
+import { product } from "@aureooms/js-itertools" ;
+import ascii from '@aureooms/js-codec-ascii' ;
 
 function macro ( t , [ [sha512name, sha512], [string, expected] ] ) {
 
-	const digest = sha512( ascii( string ), string.length * 8, alloc( 64 ) );
+	const digest = sha512( ascii.encode( string ), string.length * 8, alloc( 64 ) );
 
 	t.deepEqual( digest, expected, `${sha512name} ${string}`);
 
