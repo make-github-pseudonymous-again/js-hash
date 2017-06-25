@@ -1,114 +1,60 @@
 {
-  "coverage": "50%",
-  "expectCount": 18,
-  "actualCount": 9,
+  "coverage": "36.84%",
+  "expectCount": 19,
+  "actualCount": 7,
   "files": {
-    "src/uint32/add32.js": {
-      "expectCount": 1,
+    "src/SHA512_Hasher.js": {
+      "expectCount": 8,
       "actualCount": 0,
       "undocumentLines": [
-        1
+        6,
+        12,
+        13,
+        8,
+        62,
+        10,
+        11,
+        17
       ]
     },
-    "src/uint64/add64.js": {
+    "src/md5.js": {
       "expectCount": 1,
-      "actualCount": 0,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/md5fast.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/sha1.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/sha224.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/sha256.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/sha384.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/sha512.js": {
+      "expectCount": 5,
+      "actualCount": 1,
       "undocumentLines": [
-        1
-      ]
-    },
-    "src/uint64/and64.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        1
-      ]
-    },
-    "src/uint32/big32.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        1
-      ]
-    },
-    "src/uint64/big64.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        1
-      ]
-    },
-    "src/uint32/lil32.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        1
-      ]
-    },
-    "src/hash/md5.js": {
-      "expectCount": 1,
-      "actualCount": 1,
-      "undocumentLines": []
-    },
-    "src/hash/md5fast.js": {
-      "expectCount": 1,
-      "actualCount": 1,
-      "undocumentLines": []
-    },
-    "src/uint64/not64.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        1
-      ]
-    },
-    "src/uint32/rot32.js": {
-      "expectCount": 1,
-      "actualCount": 1,
-      "undocumentLines": []
-    },
-    "src/uint64/rot64.js": {
-      "expectCount": 1,
-      "actualCount": 1,
-      "undocumentLines": []
-    },
-    "src/uint64/sh64.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        1
-      ]
-    },
-    "src/hash/sha1.js": {
-      "expectCount": 1,
-      "actualCount": 1,
-      "undocumentLines": []
-    },
-    "src/hash/sha224.js": {
-      "expectCount": 1,
-      "actualCount": 1,
-      "undocumentLines": []
-    },
-    "src/hash/sha256.js": {
-      "expectCount": 1,
-      "actualCount": 1,
-      "undocumentLines": []
-    },
-    "src/hash/sha384.js": {
-      "expectCount": 1,
-      "actualCount": 1,
-      "undocumentLines": []
-    },
-    "src/hash/sha512.js": {
-      "expectCount": 1,
-      "actualCount": 1,
-      "undocumentLines": []
-    },
-    "src/uint64/xor64.js": {
-      "expectCount": 1,
-      "actualCount": 0,
-      "undocumentLines": [
-        1
+        79,
+        28,
+        120,
+        103
       ]
     }
   }

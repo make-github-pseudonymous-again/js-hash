@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../">
-  <title data-ice="title">src/index.js | aureooms/js-hash API Document</title>
+  <title data-ice="title">src/SHA512_Hasher.js | aureooms/js-hash API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -50,14 +50,74 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">src/index.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">export * from &apos;./md5&apos; ;
-export * from &apos;./md5fast&apos; ;
-export * from &apos;./sha1&apos; ;
-export * from &apos;./sha224&apos; ;
-export * from &apos;./sha256&apos; ;
-export * from &apos;./sha384&apos; ;
-export * from &apos;./sha512&apos; ;
+<div class="content" data-ice="content"><h1 data-ice="title">src/SHA512_Hasher.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { sha512_initial_state , sha512_call } from &apos;./sha512&apos; ;
+
+import { copy } from &apos;@aureooms/js-array&apos; ;
+import { NotImplementedError } from &apos;@aureooms/js-error&apos; ;
+
+export class SHA512_Hasher {
+
+	constructor ( ) {
+
+		this.state = sha512_initial_state() ;
+		this.total_bits = 0 ;
+		this.buffer = new ArrayBuffer(128) ;
+		this.buffer_bits = 0 ;
+
+	}
+
+	update ( bytes , offset = 0 , length = bytes.length - offset ) {
+
+		if ( this.buffer_bits &amp; 0xFFF !== 0 ) {
+			throw NotImplementedError(&apos;Cannot add bytes to bits (for now).&apos;) ;
+		}
+
+		this.total_bits += length &lt;&lt; 3 ;
+
+		const buffer_bytes = this.buffer_bits &gt;&gt; 3 ;
+
+		if ( buffer_bytes &gt; 0 ) {
+
+			const buffer_complement = 128 - buffer_bytes ;
+
+			if ( length &lt; buffer_complement ) {
+				// buffer is not full
+				copy( bytes , offset , offset + length , this.buffer , buffer_bytes ) ;
+				this.buffer_bits += length &lt;&lt; 3 ;
+				return ;
+			}
+
+			else {
+				// pad buffer with head of bytes and process it
+				copy( bytes , offset , offset + buffer_complement , this.buffer , buffer_bytes ) ;
+				sha512_call(this.state, this.buffer, 0);
+				this.buffer_bits = 0 ;
+				offset += buffer_complement ;
+				length -= buffer_complement ;
+			}
+
+		}
+
+		const full_blocks = length &gt;&gt; 7 ;
+
+		for ( let i = 0 ; i &lt; full_blocks ; ++i ) {
+			sha512_call(this.state, bytes, offset);
+			offset += 128 ;
+			length -= 128 ;
+		}
+
+		copy( bytes , offset , offset + length , this.buffer , 0 ) ;
+		this.buffer_bits = length &lt;&lt; 3 ;
+
+	}
+
+	digest ( ) {
+		const digest = new ArrayBuffer(128);
+		return sha512_finalize(this.buffer, this.total_bits, digest, this.buffer_bits &gt;&gt; 3, 0, this.buffer_bits, this.state);
+	}
+
+}
 </code></pre>
 
 </div>

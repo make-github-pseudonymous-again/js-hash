@@ -34,45 +34,52 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">hash</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-md5">md5</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/SHA512_Hasher.js~SHA512_Hasher.html">SHA512_Hasher</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-md5">md5</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-md5fast">md5fast</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sha1">sha1</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sha224">sha224</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sha256">sha256</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sha384">sha384</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sha512">sha512</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">uint32</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-big32">big32</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-lil32">lil32</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-rot32">rot32</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-add32">add32</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">uint64</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-add64">add64</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-big64">big64</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-rot64">rot64</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-xor64">xor64</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-and64">and64</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-not64">not64</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-sh64">sh64</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sha512_call">sha512_call</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sha512_cycle">sha512_cycle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sha512_finalize">sha512_finalize</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sha512_initial_state">sha512_initial_state</a></span></span></li>
 </ul>
 </div>
 </nav>
 
-<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="-js-hash-http-aureooms-github-io-js-hash-"><a href="http://aureooms.github.io/js-hash">js-hash</a></h1>
-<p>Hashing algorithms for JavaScript.</p>
-<p><a href="https://raw.githubusercontent.com/aureooms/js-hash/master/LICENSE"><img src="http://img.shields.io/npm/l/aureooms-js-hash.svg?style=flat" alt="NPM license"></a>
-<a href="https://www.npmjs.org/package/aureooms-js-hash"><img src="http://img.shields.io/npm/v/aureooms-js-hash.svg?style=flat" alt="NPM version"></a>
-<a href="https://travis-ci.org/aureooms/js-hash"><img src="http://img.shields.io/travis/aureooms/js-hash.svg?style=flat" alt="Build Status"></a>
-<a href="https://coveralls.io/r/aureooms/js-hash"><img src="http://img.shields.io/coveralls/aureooms/js-hash.svg?style=flat" alt="Coverage Status"></a>
-<a href="https://david-dm.org/aureooms/js-hash#info=dependencies"><img src="http://img.shields.io/david/aureooms/js-hash.svg?style=flat" alt="Dependencies Status"></a>
-<a href="https://david-dm.org/aureooms/js-hash#info=devDependencies"><img src="http://img.shields.io/david/dev/aureooms/js-hash.svg?style=flat" alt="devDependencies Status"></a>
-<a href="https://codeclimate.com/github/aureooms/js-hash"><img src="http://img.shields.io/codeclimate/github/aureooms/js-hash.svg?style=flat" alt="Code Climate"></a>
-<a href="https://www.npmjs.org/package/aureooms-js-hash"><img src="http://img.shields.io/npm/dm/aureooms-js-hash.svg?style=flat" alt="NPM downloads per month"></a>
-<a href="https://github.com/aureooms/js-hash/issues"><img src="http://img.shields.io/github/issues/aureooms/js-hash.svg?style=flat" alt="GitHub issues"></a>
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="-aureooms-js-hash-https-aureooms-github-io-js-hash-"><a href="https://aureooms.github.io/js-hash">@aureooms/js-hash</a></h1>
+<p>Hashing algorithms for JavaScript.
+See <a href="https://aureooms.github.io/js-hash">docs</a>.
+Parent is <a href="https://github.com/aureooms/js-algorithms">@aureooms/js-algorithms</a>.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">&gt; import ascii from &apos;@aureooms/js-codec-ascii&apos; ;
+&gt; import { sha512 } from &apos;@aureooms/js-hash&apos; ;
+&gt; const string = &apos;The quick brown fox jumps over the lazy dog&apos; ;
+&gt; const bytes = ascii.encode( string ) ;
+&gt; const digest = sha512( bytes, bytes.length * 8, alloc( 64 ) );
+&gt; digest ;
+[0x07, 0xe5, 0x47, 0xd9, 0x58, 0x6f, 0x6a, 0x73, 0xf7, 0x3f, ...]
+&gt; import base16 from &apos;@aureooms/js-codec-base16&apos; ;
+&gt; base16.decode( digest ) ;
+&apos;07E547D9586F6A73F73FBAC0435ED76951218FB7D0C8D788A309D785436B...&apos;</code>
+</code></pre>
+<p><a href="https://raw.githubusercontent.com/aureooms/js-hash/master/LICENSE"><img src="https://img.shields.io/github/license/aureooms/js-hash.svg?style=flat" alt="License"></a>
+<a href="https://www.npmjs.org/package/@aureooms/js-hash"><img src="https://img.shields.io/npm/v/@aureooms/js-hash.svg?style=flat" alt="NPM version"></a>
+<a href="https://travis-ci.org/aureooms/js-hash"><img src="https://img.shields.io/travis/aureooms/js-hash.svg?style=flat" alt="Build Status"></a>
+<a href="https://coveralls.io/r/aureooms/js-hash"><img src="https://img.shields.io/coveralls/aureooms/js-hash.svg?style=flat" alt="Coverage Status"></a>
+<a href="https://david-dm.org/aureooms/js-hash#info=dependencies"><img src="https://img.shields.io/david/aureooms/js-hash.svg?style=flat" alt="Dependencies Status"></a>
+<a href="https://david-dm.org/aureooms/js-hash#info=devDependencies"><img src="https://img.shields.io/david/dev/aureooms/js-hash.svg?style=flat" alt="devDependencies Status"></a>
+<a href="https://codeclimate.com/github/aureooms/js-hash"><img src="https://img.shields.io/codeclimate/github/aureooms/js-hash.svg?style=flat" alt="Code Climate"></a>
+<a href="https://www.npmjs.org/package/@aureooms/js-hash"><img src="https://img.shields.io/npm/dm/@aureooms/js-hash.svg?style=flat" alt="NPM downloads per month"></a>
+<a href="https://github.com/aureooms/js-hash/issues"><img src="https://img.shields.io/github/issues/aureooms/js-hash.svg?style=flat" alt="GitHub issues"></a>
 <a href="https://aureooms.github.io/js-hash/source.html"><img src="https://aureooms.github.io/js-hash/badge.svg" alt="Documentation"></a></p>
 </div>
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
 </footer>
 
 <script src="script/search_index.js"></script>
