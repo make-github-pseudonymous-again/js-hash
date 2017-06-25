@@ -60,7 +60,7 @@ export class SHA512_Hasher {
 	}
 
 	digest ( ) {
-		const digest = new ArrayBuffer(128);
+		const digest = new ArrayBuffer(64);
 		return sha512_finalize(this.buffer, this.total_bits, digest, this.buffer_bits >> 3, 0, this.buffer_bits, this.state);
 	}
 
