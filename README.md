@@ -6,10 +6,16 @@ See [docs](https://aureooms.github.io/js-hash).
 Parent is [@aureooms/js-algorithms](https://github.com/aureooms/js-algorithms).
 
 ```js
-const string = 'The quick brown fox jumps over the lazy dog' ;
-const ascii = s => list( map( c => c.charCodeAt( 0 ) , s ) ) ;
-const digest = sha512( ascii( string ), string.length * 8, alloc( 64 ) );
-digest; // [0x07, 0xe5, 0x47, 0xd9, 0x58, 0x6f, 0x6a, 0x73, 0xf7, 0x3f, ...]
+> import ascii from '@aureooms/js-codec-ascii' ;
+> import { sha512 } from '@aureooms/js-hash' ;
+> const string = 'The quick brown fox jumps over the lazy dog' ;
+> const bytes = ascii.encode( string ) ;
+> const digest = sha512( bytes, bytes.length * 8, alloc( 64 ) );
+> digest ;
+[0x07, 0xe5, 0x47, 0xd9, 0x58, 0x6f, 0x6a, 0x73, 0xf7, 0x3f, ...]
+> import base16 from '@aureooms/js-codec-base16' ;
+> base16.decode( digest ) ;
+'07E547D9586F6A73F73FBAC0435ED76951218FB7D0C8D788A309D785436B...'
 ```
 
 [![License](https://img.shields.io/github/license/aureooms/js-hash.svg?style=flat)](https://raw.githubusercontent.com/aureooms/js-hash/master/LICENSE)
