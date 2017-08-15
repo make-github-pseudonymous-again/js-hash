@@ -32,7 +32,7 @@
     "@aureooms/js-array": "^4.0.0",
     "@aureooms/js-codec-ascii": "^1.0.1",
     "@aureooms/js-itertools": "^3.3.0",
-    "ava": "^0.20.0",
+    "ava": "^0.22.0",
     "babel-cli": "^6.24.1",
     "babel-polyfill": "^6.23.0",
     "babel-preset-env": "^1.6.0",
