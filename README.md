@@ -1,6 +1,8 @@
 [@aureooms/js-hash](https://aureooms.github.io/js-hash)
 ==
 
+<img src="https://imgs.xkcd.com/comics/encryptic.png" width="432"/>
+
 Hashing algorithms for JavaScript.
 See [docs](https://aureooms.github.io/js-hash).
 Parent is [@aureooms/js-algorithms](https://github.com/aureooms/js-algorithms).
