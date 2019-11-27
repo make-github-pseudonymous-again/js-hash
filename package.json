@@ -29,17 +29,17 @@
     "@aureooms/js-uint64": "^2.0.1"
   },
   "devDependencies": {
-    "@aureooms/js-array": "^4.0.0",
-    "@aureooms/js-codec-ascii": "^1.0.1",
-    "@aureooms/js-itertools": "^3.3.0",
-    "ava": "^0.20.0",
-    "babel-cli": "^6.24.1",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-env": "^1.6.0",
-    "codeclimate-test-reporter": "^0.5.0",
-    "coveralls": "^2.13.1",
-    "esdoc": "^0.5.2",
-    "nyc": "^11.0.3"
+    "@aureooms/js-array": "4.0.0",
+    "@aureooms/js-codec-ascii": "1.0.1",
+    "@aureooms/js-itertools": "3.4.0",
+    "ava": "0.20.0",
+    "babel-cli": "6.26.0",
+    "babel-polyfill": "6.26.0",
+    "babel-preset-env": "1.7.0",
+    "codeclimate-test-reporter": "0.5.1",
+    "coveralls": "2.13.3",
+    "esdoc": "0.5.2",
+    "nyc": "11.9.0"
   },
   "homepage": "http://aureooms.github.io/js-hash",
   "keywords": [
