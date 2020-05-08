@@ -5,13 +5,13 @@
   "author": "Aurélien Ooms <aurelien.ooms@gmail.com>",
   "ava": {
     "require": [
-      "babel-polyfill",
-      "babel-register"
+      "@babel/polyfill",
+      "@babel/register"
     ]
   },
   "babel": {
     "presets": [
-      "env"
+      "@babel/preset-env"
     ],
     "env": {
       "development": {
@@ -41,9 +41,9 @@
     "esdoc": "1.1.0",
     "nyc": "11.9.0",
     "@babel/cli": "7.8.4",
-    "@babel/core": "7.9.0",
+    "@babel/core": "7.9.6",
     "@babel/polyfill": "7.8.7",
-    "@babel/preset-env": "7.9.5",
+    "@babel/preset-env": "7.9.6",
     "@babel/register": "7.9.0",
     "esdoc-inject-script-plugin": "1.0.0",
     "esdoc-inject-style-plugin": "1.0.0",
