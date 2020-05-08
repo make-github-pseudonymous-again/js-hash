@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@aureooms/js-array": "4.0.0",
-    "@aureooms/js-codec-ascii": "1.0.1",
+    "@aureooms/js-codec-ascii": "2.0.0",
     "@aureooms/js-itertools": "3.4.0",
     "ava": "0.25.0",
     "babel-cli": "6.26.0",
