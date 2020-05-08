@@ -7,7 +7,12 @@
     "require": [
       "@babel/polyfill",
       "@babel/register"
-    ]
+    ],
+    "files": [
+      "test/src/**/*"
+    ],
+    "timeout": "1m",
+    "concurrency": 8
   },
   "babel": {
     "presets": [
@@ -32,7 +37,7 @@
     "@aureooms/js-array": "4.0.0",
     "@aureooms/js-codec-ascii": "1.0.1",
     "@aureooms/js-itertools": "3.4.0",
-    "ava": "0.25.0",
+    "ava": "3.8.1",
     "babel-cli": "6.26.0",
     "babel-polyfill": "6.26.0",
     "babel-preset-env": "1.7.0",
@@ -67,7 +72,7 @@
     "build": "babel src -d lib",
     "cover": "nyc --reporter=lcov npm test",
     "prepublish": "npm run build",
-    "test": "ava ./test/src --concurrency 8",
+    "test": "ava",
     "esdoc": "esdoc"
   }
 }
