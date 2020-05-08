@@ -37,20 +37,23 @@
     "@aureooms/js-array": "4.0.0",
     "@aureooms/js-codec-ascii": "2.0.0",
     "@aureooms/js-itertools": "4.0.0",
-    "ava": "3.8.1",
-    "coveralls": "3.1.0",
-    "esdoc": "1.1.0",
-    "nyc": "15.0.1",
     "@babel/cli": "7.8.4",
     "@babel/core": "7.9.6",
     "@babel/polyfill": "7.8.7",
     "@babel/preset-env": "7.9.6",
     "@babel/register": "7.9.0",
+    "ava": "3.8.1",
+    "coveralls": "3.1.0",
+    "esdoc": "1.1.0",
     "esdoc-inject-script-plugin": "1.0.0",
     "esdoc-inject-style-plugin": "1.0.0",
     "esdoc-standard-plugin": "1.0.0",
-    "np": "6.2.3"
+    "np": "6.2.3",
+    "nyc": "15.0.1"
   },
+  "files": [
+    "lib"
+  ],
   "homepage": "http://aureooms.github.io/js-hash",
   "keywords": [
     "hash",
@@ -67,12 +70,9 @@
   "scripts": {
     "build": "rm -rf lib && babel src -d lib",
     "cover": "nyc --reporter=lcov npm test",
-    "test": "ava",
     "esdoc": "esdoc",
     "prepare": "npm run build",
-    "release": "np"
-  },
-  "files": [
-    "lib"
-  ]
+    "release": "np",
+    "test": "ava"
+  }
 }
