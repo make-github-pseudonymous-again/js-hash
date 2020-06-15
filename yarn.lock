@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@aureooms/js-array/-/js-array-4.0.0.tgz#ea64b7c788644f40bbb92259a6098ac14a4eca6c"
   integrity sha1-6mS3x4hkT0C7uSJZpgmKwUpOymw=
 
-"@aureooms/js-codec-ascii@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@aureooms/js-codec-ascii/-/js-codec-ascii-2.0.0.tgz#0962816759053eddab1cd77c4a60a3d9ec2b1a32"
-  integrity sha512-2SeWCSsxnOD4ug99BRpGC2ZjnFz+HL4iOv1etlDfBZAvOEcwg4Q4R/aTzm967E5P1Yv+Y+VTfXMhIfe6a5tlsA==
+"@aureooms/js-codec-ascii@2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@aureooms/js-codec-ascii/-/js-codec-ascii-2.0.1.tgz#c3112640a36cb7440aba61ff760876c4c29d9941"
+  integrity sha512-S85srQTq2JmRz6Cq05GH8FCxMfiOqcM/TeJVbDiWrWVyUakUWxU/lL3iSD0e5UL+sR6QJwXjUihBdCG2aDtc2A==
   dependencies:
     "@aureooms/js-codec" "^3.0.0"
 
