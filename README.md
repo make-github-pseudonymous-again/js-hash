@@ -1,7 +1,12 @@
-[@aureooms/js-hash](https://aureooms.github.io/js-hash)
+:hocho: [@aureooms/js-hash](https://aureooms.github.io/js-hash)
 ==
 
+<p align="center">
+<a href="https://xkcd.com/1286">
 <img src="https://imgs.xkcd.com/comics/encryptic.png" width="432"/>
+</a><br/>
+© <a href="https://xkcd.com">xkcd.com</a>
+</p>
 
 Hashing algorithms for JavaScript.
 See [docs](https://aureooms.github.io/js-hash).
