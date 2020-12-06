@@ -46,10 +46,10 @@
   resolved "https://registry.yarnpkg.com/@aureooms/js-uint32/-/js-uint32-1.0.1.tgz#3de266aa82d646435e7720f6f7ffb82a3fc9ff82"
   integrity sha512-2BO35e/hrheRc52qKthMOWB5QPqDH7Rftmj24Sgx26mhzakXyqHbcOErCfuCYy0nsWO1V78RlWesY56maHOSVw==
 
-"@aureooms/js-uint64@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@aureooms/js-uint64/-/js-uint64-2.0.1.tgz#ee554292c0a26c11866b03a2b94a612a62798f3c"
-  integrity sha512-sJRs79sp7telOl0wVy869eRok6mH/SUmje7BA1AYVPssyiDBCAdBBcJO3+p5uL32rk9DvS0z0QO11UK+VEnZWg==
+"@aureooms/js-uint64@^3.0.0":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@aureooms/js-uint64/-/js-uint64-3.0.1.tgz#497015e59fe16db2e95060af60bc1589a0b2581b"
+  integrity sha512-cLLQVgWsrGueryyxTAmyTMS42p7SOB+Jj/GKYLTHXTEp0QZii+wWo8d/40iXvKBFQA5yqYTPab9+lQXfZ0ZZkQ==
 
 "@babel/cli@7.12.8":
   version "7.12.8"
