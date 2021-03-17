@@ -78,7 +78,7 @@
   },
   "dependencies": {
     "@aureooms/js-array": "^4.0.0",
-    "@aureooms/js-error": "^4.0.1",
+    "@aureooms/js-error": "^5.0.0",
     "@aureooms/js-uint32": "^1.0.1",
     "@aureooms/js-uint64": "^3.0.0"
   },

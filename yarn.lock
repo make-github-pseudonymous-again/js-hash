@@ -33,6 +33,11 @@
   resolved "https://registry.yarnpkg.com/@aureooms/js-error/-/js-error-4.0.1.tgz#be2740b3f31a337e0828930c9b70d38113b4dd77"
   integrity sha512-zsgs6wmnRsKljlusewYiBaFBM/hIJp43b7OwE9ybpLEL4wfXjGP17cJTTAY8gpzALVFwEA5/flxIK0I6gJJLHQ==
 
+"@aureooms/js-error@^5.0.0":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@aureooms/js-error/-/js-error-5.0.1.tgz#474e2f1dd7189f97df770b5cc6f1bda536de262d"
+  integrity sha512-BbbpKpp4W8L2x9vL4bas+JtuAe4PMojzTpf21puHPw5p3S+lgKd8SfS9y40pVHi/b3SrQrdpmsaEKjL4xviilQ==
+
 "@aureooms/js-itertools@4.1.0":
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/@aureooms/js-itertools/-/js-itertools-4.1.0.tgz#c731eaee7de0005c6ea41f2f87cca4bdb2d86ca1"
