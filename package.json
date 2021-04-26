@@ -74,7 +74,7 @@
     }
   },
   "bugs": {
-    "url": "https://github.com/aureooms/js-hash/issues"
+    "url": "https://github.com/make-github-pseudonymous-again/js-hash/issues"
   },
   "dependencies": {
     "@aureooms/js-array": "^4.0.0",
@@ -116,7 +116,7 @@
   "license": "AGPL-3.0",
   "main": "lib/index.js",
   "repository": {
-    "url": "https://github.com/aureooms/js-hash.git",
+    "url": "https://github.com/make-github-pseudonymous-again/js-hash.git",
     "type": "git"
   },
   "scripts": {
