@@ -1,4 +1,4 @@
-:hocho: [@aureooms/js-hash](https://aureooms.github.io/js-hash)
+:hocho: [@aureooms/js-hash](https://make-github-pseudonymous-again.github.io/js-hash)
 ==
 
 <p align="center">
@@ -9,7 +9,7 @@
 </p>
 
 Hashing algorithms for JavaScript.
-See [docs](https://aureooms.github.io/js-hash).
+See [docs](https://make-github-pseudonymous-again.github.io/js-hash).
 Parent is [@aureooms/js-algorithms](https://github.com/aureooms/js-algorithms).
 
 ```js
@@ -37,5 +37,5 @@ Parent is [@aureooms/js-algorithms](https://github.com/aureooms/js-algorithms).
 [![Code maintainability](https://img.shields.io/codeclimate/maintainability/aureooms/js-hash.svg)](https://codeclimate.com/github/aureooms/js-hash/trends/churn)
 [![Code coverage (cov)](https://img.shields.io/codecov/c/gh/aureooms/js-hash/main.svg)](https://codecov.io/gh/aureooms/js-hash)
 [![Code technical debt](https://img.shields.io/codeclimate/tech-debt/aureooms/js-hash.svg)](https://codeclimate.com/github/aureooms/js-hash/trends/technical_debt)
-[![Documentation](https://aureooms.github.io/js-hash/badge.svg)](https://aureooms.github.io/js-hash/source.html)
+[![Documentation](https://make-github-pseudonymous-again.github.io/js-hash/badge.svg)](https://make-github-pseudonymous-again.github.io/js-hash/source.html)
 [![Package size](https://img.shields.io/bundlephobia/minzip/@aureooms/js-hash)](https://bundlephobia.com/result?p=@aureooms/js-hash)
