@@ -12,6 +12,7 @@
 Hashing algorithms for JavaScript.
 
 ```js
+import {alloc} from '@array-like/alloc';
 import * as ascii from '@codec-bytes/ascii';
 import * as base16 from '@codec-bytes/base16';
 import {sha512} from '@string-hashing/sha2';
