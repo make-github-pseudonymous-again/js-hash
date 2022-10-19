@@ -1,5 +1,5 @@
 :hocho:
-`@string-hashing/about`
+`js-hash`
 ==
 
 <p align="center">
@@ -23,7 +23,10 @@ digest; // [0x07, 0xe5, 0x47, 0xd9, 0x58, 0x6f, 0x6a, 0x73, 0xf7, 0x3f, ...]
 base16.decode(digest); // '07E547D9586F6A73F73FBAC0435ED76951218FB7D0C8D788A309D785436B...'
 ```
 
-## :package: Packages
+
+## :deciduous_tree: Hierarchy
+
+### :oden: String hashing
 
   - [`@string-hashing/sha2`](https://github.com/string-hashing/sha2)
   - [`@string-hashing/sha1`](https://github.com/string-hashing/sha1)
